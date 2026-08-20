@@ -3,7 +3,6 @@ import TopBar from '../components/TopBar.jsx'
 import ZikrCard from '../components/ZikrCard.jsx'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
 import { getAzkaar, defaultTimeOfDay } from '../data/azkaar.js'
-import { toUrduNumber } from '../lib/urduNumbers.js'
 
 const todayKey = () => new Date().toISOString().slice(0, 10)
 
@@ -71,7 +70,7 @@ export default function Azkaar() {
         <p className="summary">
           {completed === zikrs.length
             ? '✅ آج کے تمام اذکار مکمل ہو گئے — ماشاءاللہ'
-            : `${toUrduNumber(completed)} از ${toUrduNumber(zikrs.length)} مکمل`}
+            : `${completed} از ${zikrs.length} مکمل`}
         </p>
 
         <p className="note">

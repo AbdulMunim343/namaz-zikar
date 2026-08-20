@@ -5,11 +5,12 @@
 یہ ویب سائٹ خاص طور پر ایسے شخص کے لیے بنائی گئی ہے جو بیماری کے بعد نماز کا
 طریقہ بھول گیا ہو۔ اس لیے:
 
+- پانچوں نمازیں **مرکزی صفحے پر ہی** ہیں — ایک ہی دبانے سے نماز شروع۔
 - ایک وقت میں **صرف ایک قدم** سکرین پر آتا ہے — کچھ یاد رکھنے کی ضرورت نہیں۔
 - تحریر **بہت بڑی** ہے، اور اوپر «A+» سے اور بھی بڑی کی جا سکتی ہے۔
 - ہر قدم پر لکھا ہوتا ہے کہ **جسم کے ساتھ کیا کرنا ہے** اور **کیا پڑھنا ہے**۔
 - ہر دعا **عربی**، **اردو میں تلفظ** اور **اردو ترجمہ** — تینوں کے ساتھ۔
-- «قدم ۴ از ۲۶» ہمیشہ نظر آتا ہے، تاکہ معلوم رہے کتنا باقی ہے۔
+- «قدم 4 از 26» ہمیشہ نظر آتا ہے، تاکہ معلوم رہے کتنا باقی ہے۔
 - درمیان میں موبائل بند ہو جائے تو اگلی بار **«جاری رکھیں»** کا بٹن آ جاتا ہے۔
 - انٹرنیٹ کے بغیر بھی چلتی ہے۔
 
@@ -48,8 +49,8 @@ npm run preview    # serve the production build locally
 | `src/data/witr.js` | Witr steps, including Dua-e-Qunoot |
 | `src/data/azkaar.js` | The short morning/evening duas |
 | `src/components/StepPlayer.jsx` | The one-step-per-screen player (namaz + witr) |
+| `src/pages/Home.jsx` | Home screen — the five prayers, وتر and اذکار |
 | `src/components/ZikrCard.jsx` | One dua plus its tap-to-count circle |
-| `src/components/Posture.jsx` | The قیام / رکوع / سجدہ figures (inline SVG) |
 | `src/styles.css` | All styling: RTL, large type, light/dark |
 | `public/audio/` | Optional recordings — see the README in that folder |
 | `public/fonts/` | Self-hosted Noto Nastaliq Urdu + Amiri Quran (SIL OFL 1.1) |

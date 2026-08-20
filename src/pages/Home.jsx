@@ -1,8 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom'
 import FontSizeControl from '../components/FontSizeControl.jsx'
 import { readResume, clearResume } from '../components/StepPlayer.jsx'
-import { toUrduNumber } from '../lib/urduNumbers.js'
+import { PRAYERS } from '../data/namaz.js'
 
+/**
+ * مرکزی صفحہ — سب کچھ ایک ہی صفحے پر
+ *
+ * The five prayers sit directly on the home screen rather than behind a
+ * separate picker page, so starting a prayer is one tap instead of two.
+ */
 export default function Home() {
   const navigate = useNavigate()
   const resume = readResume()
@@ -33,23 +39,23 @@ export default function Home() {
             <span className="bigbtn__label">
               جاری رکھیں
               <span className="bigbtn__hint">
-                {resume.title} — قدم {toUrduNumber(resume.index + 1)} از{' '}
-                {toUrduNumber(resume.total)}
+                {resume.title} — قدم {resume.index + 1} از {resume.total}
               </span>
             </span>
           </button>
         ) : null}
 
-        <Link className="bigbtn" to="/namaz">
-          <span className="bigbtn__icon" aria-hidden="true">
-            🕌
-          </span>
-          <span className="bigbtn__label">
-            نماز
-            <span className="bigbtn__hint">پانچوں نمازیں — قدم بہ قدم</span>
-          </span>
-        </Link>
+        <h2 className="section">🕌 نماز</h2>
+        <div className="picker">
+          {PRAYERS.map((prayer) => (
+            <Link key={prayer.id} className="picker__card" to={`/namaz/${prayer.id}`}>
+              <span className="picker__name">{prayer.name}</span>
+              <span className="picker__count">{prayer.fard} رکعت فرض</span>
+            </Link>
+          ))}
+        </div>
 
+        <h2 className="section">اور</h2>
         <Link className="bigbtn" to="/witr">
           <span className="bigbtn__icon" aria-hidden="true">
             🌙
@@ -69,6 +75,11 @@ export default function Home() {
             <span className="bigbtn__hint">چھوٹی اور آسان دعائیں</span>
           </span>
         </Link>
+
+        <p className="note">
+          یہاں صرف فرض رکعتیں سکھائی گئی ہیں۔ سنتیں بھی اسی طریقے سے پڑھی جاتی ہیں، بس
+          نیت رکعتوں کی تعداد کی کریں۔
+        </p>
 
         {resume ? (
           <button

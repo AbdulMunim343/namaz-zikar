@@ -1,5 +1,4 @@
 import AudioButton from './AudioButton.jsx'
-import { toUrduNumber } from '../lib/urduNumbers.js'
 
 /**
  * ایک ذکر — متن اور بڑا گنتی کا بٹن
@@ -20,7 +19,7 @@ export default function ZikrCard({ zikr, count, onTap, onReset }) {
             ✅
           </span>
         ) : (
-          <span className="picker__count">{toUrduNumber(zikr.times)} بار</span>
+          <span className="picker__count">{zikr.times} بار</span>
         )}
       </div>
 
@@ -40,9 +39,9 @@ export default function ZikrCard({ zikr, count, onTap, onReset }) {
           done ? `${zikr.name} مکمل ہو گیا` : `${zikr.name} — ایک بار پڑھ لیا، دبائیں`
         }
       >
-        <span className="counter__num">{toUrduNumber(count)}</span>
+        <span className="counter__num">{count}</span>
         <span className="counter__of">
-          {done ? 'مکمل' : `${toUrduNumber(remaining)} باقی`}
+          {done ? 'مکمل' : `${remaining} باقی`}
         </span>
       </button>
 

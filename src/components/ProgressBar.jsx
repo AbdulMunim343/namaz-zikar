@@ -1,4 +1,3 @@
-import { toUrduNumber } from '../lib/urduNumbers.js'
 
 /** «قدم ۴ از ۱۳» — so he always knows where he is and how much is left. */
 export default function ProgressBar({ current, total, rakah }) {
@@ -8,9 +7,9 @@ export default function ProgressBar({ current, total, rakah }) {
     <div>
       <div className="progress__row">
         <span>
-          قدم {toUrduNumber(current)} از {toUrduNumber(total)}
+          قدم {current} از {total}
         </span>
-        {rakah ? <span>{toUrduNumber(rakah)} رکعت</span> : null}
+        {rakah ? <span>{rakah} رکعت</span> : null}
       </div>
       <div
         className="progress__track"

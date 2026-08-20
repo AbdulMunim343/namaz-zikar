@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from './TopBar.jsx'
-import Posture from './Posture.jsx'
 import ProgressBar from './ProgressBar.jsx'
 import AudioButton from './AudioButton.jsx'
-import { toUrduNumber } from '../lib/urduNumbers.js'
 
 const RESUME_KEY = 'namaz:resume'
 
@@ -112,16 +110,10 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
         <ProgressBar current={index + 1} total={steps.length} rakah={step.rakah} />
 
         <section className="step" key={step.id}>
-          {step.posture ? (
-            <div className="step__posture">
-              <Posture name={step.posture} />
-            </div>
-          ) : null}
-
           <h2 className="step__title">{step.title}</h2>
           <p className="step__do">{step.do}</p>
 
-          {step.times ? <span className="step__count">{toUrduNumber(step.times)} بار</span> : null}
+          {step.times ? <span className="step__count">{step.times} بار</span> : null}
 
           {step.arabic ? <p className="arabic">{step.arabic}</p> : null}
           {step.translit ? <p className="translit">{step.translit}</p> : null}

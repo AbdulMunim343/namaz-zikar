@@ -251,7 +251,16 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 .bigbtn--resume .bigbtn__icon { background: rgba(169, 124, 47, 0.2); }
 
-/* ---------- prayer picker ---------- */
+/* ---------- section heading ---------- */
+
+.section {
+  margin: 10px 0 -4px;
+  font-size: calc(1.15rem * var(--scale));
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+/* ---------- prayer list ---------- */
 
 .picker {
   display: grid;
@@ -344,16 +353,6 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   flex-direction: column;
   gap: 14px;
 }
-
-.step__posture {
-  display: grid;
-  place-items: center;
-  background: var(--green-soft);
-  border-radius: 14px;
-  padding: 10px;
-}
-
-.step__posture svg { width: 120px; height: 120px; }
 
 .step__title {
   margin: 0;
