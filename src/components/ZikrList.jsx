@@ -1,9 +1,10 @@
 import { useCallback, useEffect } from 'react'
 import ZikrCard from './ZikrCard.jsx'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
+import { tick, completed as playCompletedSound, preloadSfx } from '../lib/sfx.js'
 
 const todayKey = () => new Date().toISOString().slice(0, 10)
-const EMPTY = { date: todayKey(), morning: {}, evening: {}, night: {} }
+const EMPTY = { date: todayKey(), morning: {}, evening: {}, night: {}, after: {} }
 
 /**
  * اذکار کی فہرست اور گنتی
@@ -13,6 +14,10 @@ const EMPTY = { date: todayKey(), morning: {}, evening: {}, night: {} }
  */
 export default function ZikrList({ bucket, zikrs, hint }) {
   const [progress, setProgress] = useLocalStorage('namaz:azkaar', EMPTY)
+
+  useEffect(() => {
+    preloadSfx()
+  }, [])
 
   // گنتی روزانہ صفر سے شروع ہوتی ہے
   useEffect(() => {
@@ -28,6 +33,10 @@ export default function ZikrList({ bucket, zikrs, hint }) {
         const current = (prev[bucket] || {})[id] || 0
         // Tapping a finished zikr starts it over, so a miscount is easy to fix.
         const next = current >= max ? 0 : current + 1
+        // A tick for each bead, a different sound when the count is complete —
+        // so he can keep his eyes closed and still know where he is.
+        if (next === max) playCompletedSound()
+        else if (next > 0) tick()
         return { ...prev, date: todayKey(), [bucket]: { ...(prev[bucket] || {}), [id]: next } }
       }),
     [bucket, setProgress],

@@ -16,7 +16,8 @@ for it in items:
     text = STRIP.sub('،', it['arabic']).replace('ﷺ', '')
     with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp:
         wav = tmp.name
-    secs = synth(text, 'ar', wav, rate=120, pitch=40)
+    # +m3 is one of espeak-ng's male variants; the low pitch keeps it male.
+    secs = synth(text, 'ar+m3', wav, rate=120, pitch=25)
     mp3 = os.path.join(OUT, it['file'])
     subprocess.run(
         [FFMPEG, '-y', '-loglevel', 'error', '-i', wav,

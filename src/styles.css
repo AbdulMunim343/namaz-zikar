@@ -610,6 +610,15 @@ body { overscroll-behavior: none; }
 
 .actionbar .btn-primary { flex: 1 1 auto; }
 
+/* Completion screen: the next action gets its own row above the smaller two. */
+.actionbar--stack { flex-direction: column; }
+
+.actionbar--stack .btn-primary { width: 100%; }
+
+.actionbar__row { display: flex; gap: 10px; }
+
+.actionbar__row .btn-secondary { flex: 1 1 0; width: auto; }
+
 .actionbar .btn-secondary {
   flex: 0 0 34%;
   width: auto;
@@ -717,6 +726,10 @@ body { overscroll-behavior: none; }
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
+
+.tabs--three { grid-template-columns: repeat(3, 1fr); }
+
+.tabs--three button { font-size: calc(0.95rem * var(--scale)); }
 
 .tabs button {
   min-height: var(--tap);

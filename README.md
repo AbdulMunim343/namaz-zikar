@@ -8,6 +8,9 @@
 - **موبائل ایپ جیسی ساخت** — اوپر کی پٹی اور نیچے کے بٹن اپنی جگہ جمے رہتے ہیں،
   صرف درمیان کا حصہ اوپر نیچے ہوتا ہے۔
 - نیچے چار خانوں والی پٹی: **نماز | وتر | اذکار | رات** — ہر وقت ایک ہی دبانے کی دوری پر۔
+- اذکار میں تین حصے: **صبح | شام | نماز کے بعد**۔ نماز مکمل ہوتے ہی «نماز کے بعد کے
+  اذکار» کا بٹن سامنے آ جاتا ہے۔
+- تسبیح گنتے وقت ہر دبانے پر ہلکی سی «ٹِک» اور گنتی پوری ہونے پر الگ آواز۔
 - **«اگلا قدم» ہمیشہ نیچے** انگوٹھے کے نیچے رہتا ہے، دعا کتنی ہی لمبی ہو۔
 - پانچوں نمازیں **مرکزی صفحے پر ہی** ہیں — ایک ہی دبانے سے نماز شروع۔
 - ایک وقت میں **صرف ایک قدم** سکرین پر آتا ہے — کچھ یاد رکھنے کی ضرورت نہیں۔
@@ -92,6 +95,8 @@ npm run preview    # serve the production build locally
 | `src/data/namaz.js` | Prayer definitions and the step builder |
 | `src/data/witr.js` | Both witr prayers — ۲ رکعت, and ۱ رکعت with Dua-e-Qunoot |
 | `src/data/nightAzkaar.js` | سونے کے اذکار — the bedtime duas |
+| `src/data/afterNamazAzkaar.js` | نماز کے بعد کے اذکار — the post-prayer duas |
+| `src/lib/sfx.js` | Counter tick and completion chime |
 | `src/data/azkaar.js` | The short morning/evening duas |
 | `src/App.jsx` | App shell — routes plus the bottom tab bar |
 | `src/components/TabBar.jsx` | Bottom tab bar (hidden during a prayer) |
@@ -125,6 +130,8 @@ device's text-to-speech, and Android phones very often ship **no Urdu voice at
 all and frequently no Arabic one**, so «سنیں» was silent on the very phone this
 was built for. Text-to-speech remains only as a fallback for a dua with no
 recording, which is currently none of them.
+
+The reader is a **male voice** (espeak-ng's `ar+m3` variant at a low pitch).
 
 The clips are **synthesised with espeak-ng, not recited** — clear enough to
 follow the words, but robotic, and no substitute for a qari. Replacing any file

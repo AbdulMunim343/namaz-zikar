@@ -93,13 +93,22 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
             <p className="done__text">اللہ آپ کی نماز قبول فرمائے۔</p>
           </div>
         </main>
-        <div className="actionbar">
-          <button type="button" className="btn-primary" onClick={restart}>
-            دوبارہ پڑھیں
+        <div className="actionbar actionbar--stack">
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={() => navigate('/azkaar', { state: { tab: 'after' } })}
+          >
+            🕌 نماز کے بعد کے اذکار
           </button>
-          <button type="button" className="btn-secondary" onClick={() => navigate('/')}>
-            مرکزی صفحہ
-          </button>
+          <div className="actionbar__row">
+            <button type="button" className="btn-secondary" onClick={restart}>
+              دوبارہ پڑھیں
+            </button>
+            <button type="button" className="btn-secondary" onClick={() => navigate('/')}>
+              مرکزی صفحہ
+            </button>
+          </div>
         </div>
       </>
     )

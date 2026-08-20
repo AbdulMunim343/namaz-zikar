@@ -3,9 +3,14 @@
  * Regenerate with: npm run audio:manifest
  */
 export const AUDIO_FILES = new Set([
+  'after-ainni.mp3',
+  'after-istighfar.mp3',
+  'after-salam.mp3',
+  'after-tahleel-mani.mp3',
   'ameen.mp3',
   'baqarah-285.mp3',
   'baqarah-286.mp3',
+  'done.mp3',
   'dua-salam.mp3',
   'durood.mp3',
   'falaq.mp3',
@@ -30,6 +35,7 @@ export const AUDIO_FILES = new Set([
   'takbir.mp3',
   'tashahhud.mp3',
   'tasmiya.mp3',
+  'tick.mp3',
   'zikr-asbahna.mp3',
   'zikr-ayat-ul-kursi.mp3',
   'zikr-falaq.mp3',
