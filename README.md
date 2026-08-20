@@ -121,6 +121,14 @@ Audio is entirely frontend. Each step carries an optional `audio` filename:
 1. If that file exists in `public/audio/`, the 🔊 «سنیں» button plays the recording.
 2. If not, the phone's own text-to-speech reads the Arabic and then the Urdu.
 
+The engine differs by platform. Android's WebView — what the APK runs — does
+not implement the Web Speech API at all, so `speechSynthesis` is silently
+missing there. Inside the app, speech therefore goes through the **native
+Android TTS engine** (`@capacitor-community/text-to-speech`, loaded lazily so
+the browser bundle never pulls it in); in a browser it uses `speechSynthesis`.
+Android 11+ also needs the `<queries>` TTS_SERVICE entry in the manifest, or the
+app cannot see the engine at all.
+
 The reader is a **male voice** where the phone has one: `pickVoice()` matches the
 male Arabic and Urdu voices each platform ships (Maged, Hamed, Asad …) and rules
 out the female ones. If a device only has a female voice, it pitches it lower

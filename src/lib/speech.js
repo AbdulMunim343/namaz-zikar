@@ -9,6 +9,12 @@
  * Playback is two-tier and entirely frontend:
  *   1. a recording from public/audio/ when the file exists,
  *   2. otherwise the phone's own text-to-speech.
+ *
+ * For (2) the engine depends on where we are running. Android's WebView — what
+ * the APK uses — does not implement the Web Speech API at all, so
+ * speechSynthesis is silently missing there and nothing is ever spoken. Inside
+ * the app we therefore go through the native Android TTS engine via the
+ * Capacitor plugin; in a browser we use speechSynthesis as before.
  */
 
 // Vite inlines import.meta.env at build time; the guard keeps this module
@@ -25,6 +31,82 @@ function emit() {
 
 function synth() {
   return typeof window !== 'undefined' ? window.speechSynthesis : null
+}
+
+/** True inside the Android app, false in any browser. */
+export function isNative() {
+  return typeof window !== 'undefined' && window.Capacitor?.isNativePlatform?.() === true
+}
+
+/* ------------------------------------------------------------------ */
+/* اینڈرائیڈ ایپ کی آواز — the native TTS engine                        */
+/* ------------------------------------------------------------------ */
+
+let nativeTts = null
+
+/** Loaded lazily so the browser bundle never pulls the native plugin in. */
+async function getNativeTts() {
+  if (nativeTts) return nativeTts
+  const mod = await import('@capacitor-community/text-to-speech')
+  nativeTts = mod.TextToSpeech
+  return nativeTts
+}
+
+/** Test seam: lets the unit tests supply a fake plugin. */
+export function __setNativeTts(impl) {
+  nativeTts = impl
+}
+
+/** Pick a male voice index from the engine's own voice list, if it offers one. */
+async function nativeVoiceIndex(tts, lang) {
+  try {
+    const { voices } = await tts.getSupportedVoices()
+    if (!Array.isArray(voices)) return undefined
+    const base = lang.split('-')[0]
+    let best
+    voices.forEach((v, i) => {
+      if (!v.lang || !v.lang.toLowerCase().startsWith(base)) return
+      let score = 0
+      if (MALE_NAMES.test(v.name || '')) score += 10
+      if (FEMALE_NAMES.test(v.name || '')) score -= 20
+      if ((v.lang || '').toLowerCase() === lang.toLowerCase()) score += 3
+      if (!best || score > best.score) best = { i, score }
+    })
+    return best ? best.i : undefined
+  } catch {
+    // Some engines do not implement getSupportedVoices — speak with the default.
+    return undefined
+  }
+}
+
+async function speakNative(id, parts) {
+  let tts
+  try {
+    tts = await getNativeTts()
+  } catch {
+    finished(id)
+    return
+  }
+
+  for (const part of parts) {
+    if (currentId !== id) return // stopped, or another dua started
+    try {
+      const voice = await nativeVoiceIndex(tts, part.lang)
+      await tts.speak({
+        text: part.text,
+        lang: part.lang,
+        rate: 0.85,
+        pitch: 1.0,
+        volume: 1.0,
+        category: 'ambient',
+        ...(voice === undefined ? {} : { voice }),
+      })
+    } catch {
+      // A language the device has no data for throws; carry on to the next part
+      // rather than leaving the button stuck on «چل رہا ہے…».
+    }
+  }
+  finished(id)
 }
 
 /* ------------------------------------------------------------------ */
@@ -82,6 +164,13 @@ if (typeof window !== 'undefined' && window.speechSynthesis) {
 
 /** روکیں — stops a recording and any queued text-to-speech. */
 export function stop() {
+  if (isNative() && nativeTts) {
+    try {
+      nativeTts.stop()
+    } catch {
+      /* nothing was speaking */
+    }
+  }
   if (currentAudio) {
     currentAudio.onended = null
     currentAudio.onerror = null
@@ -105,13 +194,24 @@ function finished(id) {
 }
 
 function speak(id, { arabic, urdu }) {
-  const s = synth()
   const parts = [
     { text: arabic, lang: 'ar-SA' },
     { text: urdu, lang: 'ur-PK' },
   ].filter((p) => p.text)
 
-  if (!s || parts.length === 0) {
+  if (parts.length === 0) {
+    finished(id)
+    return
+  }
+
+  // Android WebView has no speechSynthesis — use the native engine instead.
+  if (isNative()) {
+    speakNative(id, parts)
+    return
+  }
+
+  const s = synth()
+  if (!s) {
     finished(id)
     return
   }
