@@ -123,7 +123,34 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
           {step.translit ? <p className="translit">{step.translit}</p> : null}
           {step.meaning ? <p className="meaning">{step.meaning}</p> : null}
 
-          <AudioButton id={step.id} arabic={step.arabic} urdu={step.meaning} audio={step.audio} />
+          {step.arabic ? (
+            <AudioButton id={step.id} arabic={step.arabic} urdu={step.meaning} audio={step.audio} />
+          ) : null}
+
+          {/* A step like «کوئی ایک چھوٹی سورت» offers a choice: show each one
+              separately so it is clear only ONE of them is to be recited. */}
+          {step.options ? (
+            <>
+              {step.choose ? <p className="choose">{step.choose}</p> : null}
+              {step.options.map((option, i) => (
+                <div className="option" key={option.id}>
+                  <h3 className="option__name">
+                    <span className="option__num">{i + 1}</span>
+                    {option.name}
+                  </h3>
+                  <p className="arabic">{option.arabic}</p>
+                  <p className="translit">{option.translit}</p>
+                  <p className="meaning">{option.meaning}</p>
+                  <AudioButton
+                    id={`${step.id}-${option.id}`}
+                    arabic={option.arabic}
+                    urdu={option.meaning}
+                    audio={option.audio}
+                  />
+                </div>
+              ))}
+            </>
+          ) : null}
         </section>
       </main>
 

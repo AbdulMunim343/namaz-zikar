@@ -24,7 +24,10 @@ Drop in `.mp3` files named exactly as listed below.
 | `tasmiya.mp3` | بسم اللہ (دوسری رکعت سے) |
 | `fatiha.mp3` | سورۃ الفاتحہ |
 | `ameen.mp3` | آمین |
+| `kafirun.mp3` | سورۃ الکافرون |
 | `ikhlas.mp3` | سورۃ الاخلاص |
+| `falaq.mp3` | سورۃ الفلق |
+| `naas.mp3` | سورۃ الناس |
 | `ruku.mp3` | سبحان ربی العظیم |
 | `qawma.mp3` | سمع اللہ لمن حمدہ / ربنا ولک الحمد |
 | `sajda.mp3` | سبحان ربی الاعلیٰ |

@@ -15,7 +15,7 @@ import {
   TASMIYA,
   FATIHA,
   AMEEN,
-  SURAH_IKHLAS,
+  FOUR_QULS,
   RUKU,
   QAWMA,
   SAJDA_1,
@@ -81,7 +81,7 @@ function witrRakah(rakah, { withQunoot }) {
   steps.push(rakah === 1 ? TAKBIR : STAND_UP)
   if (rakah === 1) steps.push(HANDS_ON_CHEST, DUA_ISTIFTAH, TAAWWUZ)
   else steps.push(TASMIYA)
-  steps.push(FATIHA, AMEEN, SURAH_IKHLAS)
+  steps.push(FATIHA, AMEEN, FOUR_QULS)
 
   // اہلحدیث: دعائے قنوت رکوع سے پہلے
   if (withQunoot) steps.push(QUNOOT_1, QUNOOT_2, RUKU_AFTER_QUNOOT)
