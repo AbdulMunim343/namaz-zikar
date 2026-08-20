@@ -7,7 +7,7 @@
 
 - **موبائل ایپ جیسی ساخت** — اوپر کی پٹی اور نیچے کے بٹن اپنی جگہ جمے رہتے ہیں،
   صرف درمیان کا حصہ اوپر نیچے ہوتا ہے۔
-- نیچے تین خانوں والی پٹی: **نماز | وتر | اذکار** — ہر وقت ایک ہی دبانے کی دوری پر۔
+- نیچے چار خانوں والی پٹی: **نماز | وتر | اذکار | رات** — ہر وقت ایک ہی دبانے کی دوری پر۔
 - **«اگلا قدم» ہمیشہ نیچے** انگوٹھے کے نیچے رہتا ہے، دعا کتنی ہی لمبی ہو۔
 - پانچوں نمازیں **مرکزی صفحے پر ہی** ہیں — ایک ہی دبانے سے نماز شروع۔
 - ایک وقت میں **صرف ایک قدم** سکرین پر آتا ہے — کچھ یاد رکھنے کی ضرورت نہیں۔
@@ -19,7 +19,8 @@
 - انٹرنیٹ کے بغیر بھی چلتی ہے۔
 
 نماز کا طریقہ **اہلحدیث** مسلک کے مطابق ہے (رفع الیدین، آمین بلند آواز سے، ہاتھ
-سینے پر، اور وتر میں دعائے قنوت رکوع سے پہلے)۔
+سینے پر)۔ وتر دو الگ نمازیں ہیں: پہلے ۲ رکعت پڑھ کر سلام، پھر الگ نیت سے ۱ رکعت
+جس میں دعائے قنوت رکوع سے پہلے پڑھی جاتی ہے۔
 
 ---
 
@@ -50,13 +51,15 @@ npm run preview    # serve the production build locally
 | Path | What's in it |
 | --- | --- |
 | `src/data/namaz.js` | Prayer definitions and the step builder |
-| `src/data/witr.js` | Witr steps, including Dua-e-Qunoot |
+| `src/data/witr.js` | Both witr prayers — ۲ رکعت, and ۱ رکعت with Dua-e-Qunoot |
+| `src/data/nightAzkaar.js` | سونے کے اذکار — the bedtime duas |
 | `src/data/azkaar.js` | The short morning/evening duas |
 | `src/App.jsx` | App shell — routes plus the bottom tab bar |
 | `src/components/TabBar.jsx` | Bottom tab bar (hidden during a prayer) |
 | `src/components/StepPlayer.jsx` | The one-step-per-screen player (namaz + witr) |
 | `src/pages/Home.jsx` | Home screen — the five prayers, وتر and اذکار |
 | `src/components/ZikrCard.jsx` | One dua plus its tap-to-count circle |
+| `src/components/ZikrList.jsx` | Shared list + daily counters (صبح/شام and رات) |
 | `src/styles.css` | All styling: RTL, large type, light/dark |
 | `public/audio/` | Optional recordings — see the README in that folder |
 | `public/fonts/` | Self-hosted Noto Nastaliq Urdu + Amiri Quran (SIL OFL 1.1) |

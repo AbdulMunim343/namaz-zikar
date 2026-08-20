@@ -14,6 +14,7 @@ export default function NamazFlow() {
 
   return (
     <StepPlayer
+      key={prayerId}
       title={`${prayer.name} کی نماز`}
       steps={steps}
       path={`/namaz/${prayerId}`}

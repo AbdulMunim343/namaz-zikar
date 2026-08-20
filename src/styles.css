@@ -555,7 +555,7 @@ body { overscroll-behavior: none; }
 .tabbar {
   flex: 0 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   background: var(--surface);
   border-top: 1px solid var(--line);
   padding-bottom: env(safe-area-inset-bottom);
@@ -583,7 +583,7 @@ body { overscroll-behavior: none; }
 .tabbar__icon { font-size: 1.5rem; line-height: 1; }
 
 .tabbar__label {
-  font-size: calc(0.8rem * var(--scale));
+  font-size: calc(0.75rem * var(--scale));
   font-weight: 700;
   line-height: 1.6;
 }

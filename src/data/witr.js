@@ -1,7 +1,9 @@
 /**
- * وتر — تین رکعت، اہلحدیث طریقے کے مطابق
+ * وتر — اہلحدیث طریقے کے مطابق، دو الگ الگ نمازیں
  *
- * تیسری رکعت میں دعائے قنوت رکوع سے *پہلے* پڑھی جاتی ہے۔
+ *   ۲ رکعت وتر  — پڑھ کر سلام پھیر لیں۔
+ *   ۱ رکعت وتر  — الگ نیت سے، اس میں دعائے قنوت رکوع سے *پہلے* پڑھی جاتی ہے۔
+ *
  * دعائے قنوت کو دو حصوں میں بانٹا گیا ہے تاکہ ایک ساتھ لمبی عبارت نہ آئے۔
  */
 
@@ -25,17 +27,28 @@ import {
   STAND_UP,
 } from './namaz.js'
 
-export const WITR_INFO = {
-  name: 'وتر',
-  rakahs: 3,
-  time: 'عشاء کے بعد سے فجر سے پہلے تک',
-  note: 'وتر تین رکعت ہیں جو ایک ہی سلام کے ساتھ پڑھی جاتی ہیں۔ تیسری رکعت میں رکوع سے پہلے دعائے قنوت پڑھی جاتی ہے۔',
+export const WITR_OPTIONS = [
+  {
+    id: 'two',
+    name: '۲ رکعت وتر',
+    rakahs: 2,
+    hint: 'پہلے یہ دو رکعت پڑھ کر سلام پھیر لیں',
+  },
+  {
+    id: 'one',
+    name: '۱ رکعت وتر',
+    rakahs: 1,
+    hint: 'اس میں دعائے قنوت پڑھی جاتی ہے',
+  },
+]
+
+export function getWitrOption(id) {
+  return WITR_OPTIONS.find((o) => o.id === id)
 }
 
 const QUNOOT_1 = {
-  posture: 'qiyam',
   title: 'دعائے قنوت — پہلا حصہ',
-  do: 'تیسری رکعت میں سورت کے بعد، رکوع میں جانے سے پہلے — یعنی کھڑے کھڑے ہی — ہاتھ دعا کے لیے اُٹھائیں اور پڑھیں:',
+  do: 'سورت کے بعد، رکوع میں جانے سے پہلے — یعنی کھڑے کھڑے ہی — ہاتھ دعا کے لیے اُٹھائیں اور پڑھیں:',
   arabic:
     'اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ',
   translit:
@@ -46,7 +59,6 @@ const QUNOOT_1 = {
 }
 
 const QUNOOT_2 = {
-  posture: 'qiyam',
   title: 'دعائے قنوت — دوسرا حصہ',
   do: 'اسی طرح ہاتھ اُٹھائے ہوئے دعا مکمل کریں:',
   arabic:
@@ -63,31 +75,42 @@ const RUKU_AFTER_QUNOOT = {
   do: 'دعا کے بعد ہاتھ نیچے کر لیں، «اللہ اکبر» کہیں اور رکوع میں جائیں۔ ہاتھ گھٹنوں پر رکھیں اور پڑھیں:',
 }
 
-function witrRakah(rakah) {
+/** ایک رکعت — قنوت صرف آخری رکعت میں۔ */
+function witrRakah(rakah, { withQunoot }) {
   const steps = []
   steps.push(rakah === 1 ? TAKBIR : STAND_UP)
   if (rakah === 1) steps.push(HANDS_ON_CHEST, DUA_ISTIFTAH, TAAWWUZ)
   else steps.push(TASMIYA)
   steps.push(FATIHA, AMEEN, SURAH_IKHLAS)
 
-  if (rakah === 3) {
-    // اہلحدیث: دعائے قنوت رکوع سے پہلے
-    steps.push(QUNOOT_1, QUNOOT_2, RUKU_AFTER_QUNOOT)
-  } else {
-    steps.push(RUKU)
-  }
+  // اہلحدیث: دعائے قنوت رکوع سے پہلے
+  if (withQunoot) steps.push(QUNOOT_1, QUNOOT_2, RUKU_AFTER_QUNOOT)
+  else steps.push(RUKU)
 
   steps.push(QAWMA, SAJDA_1, JALSA, SAJDA_2)
   return steps.map((step, i) => ({ ...step, rakah, id: `w${rakah}-${i}-${step.title}` }))
 }
 
-/** تینوں رکعتیں ایک ہی سلام کے ساتھ — درمیان میں تشہد کے لیے نہیں بیٹھتے۔ */
-export function buildWitrSteps() {
-  const steps = [...witrRakah(1), ...witrRakah(2), ...witrRakah(3)]
-  steps.push(
-    { ...TASHAHHUD, rakah: 3, id: 'w3-tashahhud' },
-    { ...DUROOD, rakah: 3, id: 'w3-durood' },
-    { ...SALAM, rakah: 3, id: 'w3-salam' },
-  )
-  return steps
+const ending = (rakah) => [
+  { ...TASHAHHUD, rakah, id: `w${rakah}-tashahhud` },
+  { ...DUROOD, rakah, id: `w${rakah}-durood` },
+  { ...SALAM, rakah, id: `w${rakah}-salam` },
+]
+
+/** ۲ رکعت وتر — قنوت کے بغیر، دو رکعت کے بعد سلام۔ */
+export function buildWitrTwoSteps() {
+  return [
+    ...witrRakah(1, { withQunoot: false }),
+    ...witrRakah(2, { withQunoot: false }),
+    ...ending(2),
+  ]
+}
+
+/** ۱ رکعت وتر — دعائے قنوت کے ساتھ، الگ نیت اور الگ سلام۔ */
+export function buildWitrOneSteps() {
+  return [...witrRakah(1, { withQunoot: true }), ...ending(1)]
+}
+
+export function buildWitrSteps(variant) {
+  return variant === 'one' ? buildWitrOneSteps() : buildWitrTwoSteps()
 }

@@ -11,6 +11,7 @@ const TABS = [
   { to: '/', icon: '🕌', label: 'نماز' },
   { to: '/witr', icon: '🌙', label: 'وتر' },
   { to: '/azkaar', icon: '📿', label: 'اذکار' },
+  { to: '/night', icon: '🛏️', label: 'رات' },
 ]
 
 export default function TabBar() {
