@@ -35,6 +35,44 @@
 
 ---
 
+## اینڈرائیڈ ایپ (APK)
+
+ویب سائٹ کے اوپر «اینڈرائیڈ ایپ ڈاؤن لوڈ کریں» کی پٹی سے APK ڈاؤن لوڈ کریں۔
+
+فون پر انسٹال کرنے کا طریقہ:
+
+1. لنک دبا کر فائل ڈاؤن لوڈ کریں۔
+2. فون پوچھے گا — براؤزر کو **«نامعلوم ایپس انسٹال کرنے کی اجازت»** دے دیں
+   (Settings → Apps → Chrome → Install unknown apps)۔
+3. ڈاؤن لوڈ شدہ فائل کھولیں اور Install دبائیں۔
+
+ایپ بالکل ویب سائٹ جیسی ہے، اور انٹرنیٹ کے بغیر بھی چلتی ہے۔
+
+---
+
+## Android build
+
+The APK is the same app: [Capacitor](https://capacitorjs.com) wraps the very
+same `dist/` build in an Android shell, so there is one codebase and the phone
+app can never drift from the website.
+
+`.github/workflows/android.yml` builds it on every push (GitHub's runners have
+the Android SDK preinstalled) and publishes it to a fixed `apk-latest` release,
+which is exactly the URL the in-app download bar points at — so the link keeps
+working as new versions ship.
+
+To build it yourself you need the Android SDK and JDK 21 locally:
+
+```bash
+npm run android:apk      # → android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+`npm run android:sync` alone just copies a fresh web build into the Android
+project. The APK is **debug-signed**, which is fine for installing directly on
+a phone but not for the Play Store; that would need a release keystore.
+
+---
+
 ## Development
 
 Plain frontend — React + Vite, no backend and no database.

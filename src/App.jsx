@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import TabBar from './components/TabBar.jsx'
+import DownloadBanner from './components/DownloadBanner.jsx'
 import { stop as stopSpeech } from './lib/speech.js'
 import Home from './pages/Home.jsx'
 import NamazFlow from './pages/NamazFlow.jsx'
@@ -22,8 +23,11 @@ export default function App() {
     stopSpeech()
   }, [pathname])
 
+  const browsing = usesTabBar(pathname)
+
   return (
     <div className="app">
+      {browsing ? <DownloadBanner /> : null}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/namaz" element={<Navigate to="/" replace />} />
@@ -34,7 +38,7 @@ export default function App() {
         <Route path="/night" element={<NightAzkaar />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      {usesTabBar(pathname) ? <TabBar /> : null}
+      {browsing ? <TabBar /> : null}
     </div>
   )
 }

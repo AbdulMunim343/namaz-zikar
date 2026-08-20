@@ -159,6 +159,54 @@ body { overscroll-behavior: none; }
   gap: 16px;
 }
 
+/* ---------- اینڈرائیڈ ایپ کی پٹی ---------- */
+
+.apkbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  background: var(--gold-soft);
+  border-bottom: 1px solid var(--gold);
+  padding-top: env(safe-area-inset-top);
+}
+
+.apkbar__link {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 6px 14px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.apkbar__icon { font-size: 1.4rem; line-height: 1; }
+
+.apkbar__text {
+  font-size: calc(0.95rem * var(--scale));
+  font-weight: 700;
+  line-height: 1.8;
+}
+
+.apkbar__hint {
+  display: block;
+  font-size: calc(0.75rem * var(--scale));
+  font-weight: 400;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.apkbar__close {
+  flex: 0 0 auto;
+  width: 52px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 1.1rem;
+}
+
 /* ---------- top bar ---------- */
 
 .topbar {

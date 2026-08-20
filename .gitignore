@@ -3,3 +3,6 @@ dist
 dev-dist
 .DS_Store
 *.local
+
+# Built APK (published to GitHub Releases by the workflow)
+namaz-zikar.apk

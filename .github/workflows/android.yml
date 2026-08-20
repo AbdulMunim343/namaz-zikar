@@ -1,0 +1,65 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - run: npm ci
+
+      # The APK loads the app from the device, so it needs the domain-root
+      # build (VITE_BASE unset), which is also the default.
+      - run: npm run build
+
+      - name: Copy the web build into the Android project
+        run: npx cap sync android
+
+      - name: Point Gradle at the runner's Android SDK
+        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+
+      - name: Assemble the APK
+        working-directory: android
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon assembleDebug
+
+      - name: Name it for download
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk namaz-zikar.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: namaz-zikar-apk
+          path: namaz-zikar.apk
+
+      # Publish to a fixed tag so the in-app download link never changes.
+      - name: Publish to the apk-latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "اینڈرائیڈ ایپ۔ فون پر انسٹال کرنے کے لیے نیچے namaz-zikar.apk ڈاؤن لوڈ کریں۔"
+            echo
+            echo "Android app, built from ${{ github.sha }}."
+            echo "Sideload build: on the phone, allow **Install unknown apps** for your browser, then open the downloaded file."
+          } > notes.md
+          gh release create apk-latest --title "نماز و اذکار — Android app" --notes-file notes.md || true
+          gh release upload apk-latest namaz-zikar.apk --clobber
