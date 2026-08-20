@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import TabBar from './components/TabBar.jsx'
+import { stop as stopSpeech } from './lib/speech.js'
 import Home from './pages/Home.jsx'
 import NamazFlow from './pages/NamazFlow.jsx'
 import WitrFlow from './pages/WitrFlow.jsx'
@@ -12,6 +14,11 @@ function usesTabBar(pathname) {
 
 export default function App() {
   const { pathname } = useLocation()
+
+  // دوسرے صفحے پر جاتے ہی آواز بند — audio never follows him to the next screen.
+  useEffect(() => {
+    stopSpeech()
+  }, [pathname])
 
   return (
     <div className="app">

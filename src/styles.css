@@ -58,6 +58,7 @@
   --green-soft: #e4f0e9;
   --gold: #a97c2f;
   --gold-soft: #f6eeda;
+  --stop: #a33a2a;
 
   --radius: 18px;
   --tap: 60px;
@@ -81,6 +82,7 @@
     --green-soft: #1b3229;
     --gold: #d7ac63;
     --gold-soft: #33291a;
+    --stop: #e08573;
   }
 }
 
@@ -456,8 +458,14 @@ body { overscroll-behavior: none; }
 
 /* ---------- audio ---------- */
 
+.audiorow {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .audiobtn {
-  align-self: center;
   min-height: var(--tap);
   padding: 0 28px;
   border: 2px solid var(--green);
@@ -474,6 +482,17 @@ body { overscroll-behavior: none; }
 .audiobtn[data-playing='true'] {
   background: var(--green);
   color: #fff;
+}
+
+.audiobtn--stop {
+  border-color: var(--stop);
+  color: var(--stop);
+}
+
+.audiobtn--stop:disabled {
+  opacity: 0.4;
+  border-color: var(--line);
+  color: var(--ink-soft);
 }
 
 /* ---------- navigation ---------- */

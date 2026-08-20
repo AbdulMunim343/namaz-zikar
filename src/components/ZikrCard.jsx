@@ -28,7 +28,7 @@ export default function ZikrCard({ zikr, count, onTap, onReset }) {
       <p className="meaning">{zikr.meaning}</p>
       {zikr.virtue ? <p className="note">{zikr.virtue}</p> : null}
 
-      <AudioButton arabic={zikr.arabic} urdu={zikr.meaning} audio={zikr.audio} />
+      <AudioButton id={zikr.id} arabic={zikr.arabic} urdu={zikr.meaning} audio={zikr.audio} />
 
       <button
         type="button"

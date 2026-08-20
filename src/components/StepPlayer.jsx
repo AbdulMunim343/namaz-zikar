@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from './TopBar.jsx'
+import { stop as stopSpeech } from '../lib/speech.js'
 import ProgressBar from './ProgressBar.jsx'
 import AudioButton from './AudioButton.jsx'
 
@@ -55,8 +56,11 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
 
   // Each step is its own screen — always start reading from the top.
   // Only .page scrolls in the app shell, so reset that, not the window.
+  // Moving on also stops any audio: the previous step should not carry over.
+  // (Advancing a step keeps the same URL, so the route-level stop misses it.)
   useEffect(() => {
     if (pageRef.current) pageRef.current.scrollTop = 0
+    stopSpeech()
   }, [index, finished])
 
   const next = useCallback(() => {
@@ -119,7 +123,7 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
           {step.translit ? <p className="translit">{step.translit}</p> : null}
           {step.meaning ? <p className="meaning">{step.meaning}</p> : null}
 
-          <AudioButton arabic={step.arabic} urdu={step.meaning} audio={step.audio} />
+          <AudioButton id={step.id} arabic={step.arabic} urdu={step.meaning} audio={step.audio} />
         </section>
       </main>
 

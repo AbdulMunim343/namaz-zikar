@@ -76,8 +76,14 @@ thumb no matter how long the dua on screen is.
 
 Audio is entirely frontend. Each step carries an optional `audio` filename:
 
-1. If that file exists in `public/audio/`, the 🔊 button plays the recording.
+1. If that file exists in `public/audio/`, the 🔊 «سنیں» button plays the recording.
 2. If not, the phone's own text-to-speech reads the Arabic and then the Urdu.
+
+A separate ⏹ «روکیں» button stops playback — two buttons that each do one thing,
+rather than one button that changes meaning. Playback runs through a single
+shared controller (`src/lib/speech.js`), so only one dua can play at a time,
+«روکیں» on any card stops whatever is playing, and audio stops on its own when
+he moves to the next step or leaves the screen.
 
 So the app speaks today, and real recordings can be added later at any time —
 see [`public/audio/README.md`](public/audio/README.md).
