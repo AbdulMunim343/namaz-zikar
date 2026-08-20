@@ -24,6 +24,7 @@ export function getPrayer(id) {
 /* ------------------------------------------------------------------ */
 
 export const TAKBIR = {
+  key: 'takbir',
   posture: 'takbir',
   title: 'تکبیرِ تحریمہ',
   do: 'قبلہ رُخ سیدھے کھڑے ہو جائیں۔ دونوں ہاتھ کندھوں تک اُٹھائیں (رفع الیدین) اور کہیں:',
@@ -34,12 +35,14 @@ export const TAKBIR = {
 }
 
 export const HANDS_ON_CHEST = {
+  key: 'handsOnChest',
   posture: 'qiyam',
   title: 'ہاتھ باندھیں',
   do: 'اب دایاں ہاتھ بائیں ہاتھ پر رکھ کر دونوں ہاتھ سینے پر باندھ لیں۔ نظر سجدے کی جگہ پر رکھیں۔',
 }
 
 export const DUA_ISTIFTAH = {
+  key: 'istiftah',
   posture: 'qiyam',
   title: 'دعائے استفتاح',
   do: 'آہستہ آواز میں یہ دعا پڑھیں:',
@@ -53,6 +56,7 @@ export const DUA_ISTIFTAH = {
 }
 
 export const TAAWWUZ = {
+  key: 'taawwuz',
   posture: 'qiyam',
   title: 'تعوذ اور تسمیہ',
   do: 'آہستہ آواز میں پڑھیں:',
@@ -64,6 +68,7 @@ export const TAAWWUZ = {
 }
 
 export const TASMIYA = {
+  key: 'tasmiya',
   posture: 'qiyam',
   title: 'تسمیہ',
   do: 'تعوذ صرف پہلی رکعت میں پڑھا جاتا ہے۔ اب آہستہ آواز میں صرف بسم اللہ پڑھیں:',
@@ -74,6 +79,7 @@ export const TASMIYA = {
 }
 
 export const FATIHA = {
+  key: 'fatiha',
   posture: 'qiyam',
   title: 'سورۃ الفاتحہ',
   do: 'ہر رکعت میں سورۃ الفاتحہ پڑھنا ضروری ہے۔ ٹھہر ٹھہر کر پڑھیں:',
@@ -87,6 +93,7 @@ export const FATIHA = {
 }
 
 export const AMEEN = {
+  key: 'ameen',
   posture: 'qiyam',
   title: 'آمین',
   do: 'سورۃ الفاتحہ ختم کرتے ہی آمین کہیں — فجر، مغرب اور عشاء کی بلند آواز والی رکعتوں میں آواز کے ساتھ۔',
@@ -98,6 +105,7 @@ export const AMEEN = {
 
 export const AMEEN_QUIET = {
   ...AMEEN,
+  key: 'ameenQuiet',
   do: 'تیسری اور چوتھی رکعت میں قرأت آہستہ ہوتی ہے، اس لیے آمین بھی آہستہ کہیں۔',
 }
 
@@ -109,6 +117,7 @@ export const AMEEN_QUIET = {
  * rather than as a single thing to recite.
  */
 export const FOUR_QULS = {
+  key: 'fourQuls',
   title: 'کوئی ایک چھوٹی سورت',
   do: 'صرف پہلی دو رکعتوں میں سورۃ الفاتحہ کے بعد کوئی ایک چھوٹی سورت پڑھی جاتی ہے۔ نیچے چاروں «قل» دی گئی ہیں — ان میں سے صرف ایک پڑھ لیں، جو آپ کو سب سے آسان لگے۔',
   choose: 'ان چاروں میں سے کوئی ایک پڑھیں',
@@ -161,6 +170,7 @@ export const FOUR_QULS = {
 }
 
 export const RUKU = {
+  key: 'ruku',
   posture: 'ruku',
   title: 'رکوع',
   do: 'دونوں ہاتھ کندھوں تک اُٹھائیں (رفع الیدین)، «اللہ اکبر» کہیں، پھر جھک جائیں اور ہاتھ گھٹنوں پر رکھیں۔ کمر سیدھی رکھیں۔ پھر پڑھیں:',
@@ -172,6 +182,7 @@ export const RUKU = {
 }
 
 export const QAWMA = {
+  key: 'qawma',
   posture: 'qiyam',
   title: 'رکوع سے اُٹھنا',
   do: 'رکوع سے اُٹھتے ہوئے ہاتھ کندھوں تک اُٹھائیں (رفع الیدین) اور «سَمِعَ اللہُ لِمَنْ حَمِدَہ» کہیں، پھر سیدھے کھڑے ہو کر پڑھیں:',
@@ -182,6 +193,7 @@ export const QAWMA = {
 }
 
 export const SAJDA_1 = {
+  key: 'sajda1',
   posture: 'sujud',
   title: 'پہلا سجدہ',
   do: '«اللہ اکبر» کہہ کر سجدے میں جائیں۔ پیشانی، ناک، دونوں ہتھیلیاں، دونوں گھٹنے اور پاؤں کی انگلیاں زمین پر لگیں۔ پھر پڑھیں:',
@@ -193,6 +205,7 @@ export const SAJDA_1 = {
 }
 
 export const JALSA = {
+  key: 'jalsa',
   posture: 'jalsa',
   title: 'دو سجدوں کے درمیان بیٹھنا',
   do: '«اللہ اکبر» کہہ کر سجدے سے اُٹھ کر اطمینان سے بیٹھ جائیں، پھر پڑھیں:',
@@ -204,11 +217,13 @@ export const JALSA = {
 
 export const SAJDA_2 = {
   ...SAJDA_1,
+  key: 'sajda2',
   title: 'دوسرا سجدہ',
   do: 'دوبارہ «اللہ اکبر» کہہ کر سجدے میں جائیں اور پھر وہی تسبیح پڑھیں:',
 }
 
 export const TASHAHHUD = {
+  key: 'tashahhud',
   posture: 'jalsa',
   title: 'تشہد (التحیات)',
   do: 'بیٹھے بیٹھے دائیں ہاتھ کی شہادت والی اُنگلی سے اشارہ کرتے ہوئے پڑھیں:',
@@ -222,6 +237,7 @@ export const TASHAHHUD = {
 }
 
 export const DUROOD = {
+  key: 'durood',
   posture: 'jalsa',
   title: 'درودِ ابراہیمی',
   do: 'تشہد کے بعد بیٹھے بیٹھے نبی ﷺ پر درود بھیجیں:',
@@ -235,6 +251,7 @@ export const DUROOD = {
 }
 
 export const DUA_BEFORE_SALAM = {
+  key: 'duaBeforeSalam',
   posture: 'jalsa',
   title: 'سلام سے پہلے دعا',
   do: 'سلام پھیرنے سے پہلے یہ دعا مانگیں:',
@@ -248,6 +265,7 @@ export const DUA_BEFORE_SALAM = {
 }
 
 export const SALAM = {
+  key: 'salam',
   posture: 'salam',
   title: 'سلام',
   do: 'پہلے دائیں طرف مُنہ پھیر کر، پھر بائیں طرف مُنہ پھیر کر کہیں:',
@@ -259,6 +277,7 @@ export const SALAM = {
 }
 
 export const STAND_UP = {
+  key: 'standUp',
   posture: 'takbir',
   title: 'اگلی رکعت کے لیے کھڑے ہوں',
   do: '«اللہ اکبر» کہہ کر سیدھے کھڑے ہو جائیں اور ہاتھ سینے پر باندھ لیں۔',
@@ -269,6 +288,7 @@ export const STAND_UP = {
 }
 
 export const STAND_FROM_TASHAHHUD = {
+  key: 'standFromTashahhud',
   posture: 'takbir',
   title: 'تشہد کے بعد کھڑے ہوں',
   do: '«اللہ اکبر» کہہ کر کھڑے ہو جائیں اور ہاتھ کندھوں تک اُٹھائیں (رفع الیدین)، پھر ہاتھ سینے پر باندھ لیں۔',
@@ -330,6 +350,7 @@ export function buildNamazSteps(prayerId) {
     } else if (rakah === 2) {
       steps.push({
         ...TASHAHHUD,
+        key: 'tashahhudMiddle',
         title: 'درمیانی تشہد',
         do: 'دوسری رکعت کے بعد بیٹھ جائیں اور صرف تشہد پڑھیں (درود اور دعا آخری رکعت میں پڑھیں گے):',
         rakah,

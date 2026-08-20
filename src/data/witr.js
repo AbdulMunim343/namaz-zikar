@@ -47,6 +47,7 @@ export function getWitrOption(id) {
 }
 
 const QUNOOT_1 = {
+  key: 'qunoot1',
   title: 'دعائے قنوت — پہلا حصہ',
   do: 'سورت کے بعد، رکوع میں جانے سے پہلے — یعنی کھڑے کھڑے ہی — ہاتھ دعا کے لیے اُٹھائیں اور پڑھیں:',
   arabic:
@@ -59,6 +60,7 @@ const QUNOOT_1 = {
 }
 
 const QUNOOT_2 = {
+  key: 'qunoot2',
   title: 'دعائے قنوت — دوسرا حصہ',
   do: 'اسی طرح ہاتھ اُٹھائے ہوئے دعا مکمل کریں:',
   arabic:
@@ -72,6 +74,7 @@ const QUNOOT_2 = {
 
 const RUKU_AFTER_QUNOOT = {
   ...RUKU,
+  key: 'rukuAfterQunoot',
   do: 'دعا کے بعد ہاتھ نیچے کر لیں، «اللہ اکبر» کہیں اور رکوع میں جائیں۔ ہاتھ گھٹنوں پر رکھیں اور پڑھیں:',
 }
 

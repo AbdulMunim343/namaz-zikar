@@ -1,16 +1,20 @@
 import TopBar from '../components/TopBar.jsx'
 import ZikrList from '../components/ZikrList.jsx'
 import { getNightAzkaar } from '../data/nightAzkaar.js'
+import { useLang } from '../hooks/useLang.js'
+import { localizeZikr } from '../lib/lang.js'
 
 export default function NightAzkaar() {
+  const { t, lang } = useLang()
+
   return (
     <>
-      <TopBar title="سونے کے اذکار" />
+      <TopBar title={t.nightTitle} />
       <main className="page">
         <ZikrList
           bucket="night"
-          zikrs={getNightAzkaar()}
-          hint="یہ اذکار رات کو بستر پر لیٹنے سے پہلے پڑھے جاتے ہیں۔ آخری دعا صبح آنکھ کھلنے پر۔"
+          zikrs={getNightAzkaar().map((z) => localizeZikr(z, lang))}
+          hint={t.nightHint}
         />
       </main>
     </>

@@ -327,6 +327,44 @@ body { overscroll-behavior: none; }
 
 .bigbtn--resume .bigbtn__icon { background: rgba(169, 124, 47, 0.2); }
 
+/* ---------- زبان switch ---------- */
+
+.langswitch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.langswitch button {
+  min-height: 56px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: calc(1rem * var(--scale));
+  font-weight: 700;
+}
+
+.langswitch button[aria-pressed='true'] {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+/* In English the interface reads in a Latin face, but the transliteration is
+   still Urdu script and keeps its Nastaliq font and right-to-left flow. */
+:root[data-lang='en'] body {
+  font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  line-height: 1.55;
+}
+
+:root[data-lang='en'] .translit {
+  font-family: var(--font-urdu);
+  line-height: 2.1;
+}
+
+:root[data-lang='en'] .arabic { direction: rtl; }
+
 /* ---------- section heading ---------- */
 
 .section {

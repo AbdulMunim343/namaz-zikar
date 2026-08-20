@@ -1,21 +1,26 @@
 import { Link } from 'react-router-dom'
 import TopBar from '../components/TopBar.jsx'
 import { WITR_OPTIONS } from '../data/witr.js'
+import { useLang } from '../hooks/useLang.js'
+import { witrOption } from '../lib/lang.js'
 
 /**
  * وتر دو الگ نمازیں ہیں: پہلے ۲ رکعت پڑھ کر سلام، پھر الگ نیت سے ۱ رکعت۔
  */
 export default function WitrPicker() {
+  const { t, lang } = useLang()
+
   return (
     <>
-      <TopBar title="وتر" />
+      <TopBar title={t.witrTitle} />
       <main className="page">
         <p className="note">
-          وتر دو حصوں میں پڑھے جاتے ہیں۔ پہلے ۲ رکعت پڑھ کر سلام پھیر لیں، پھر الگ نیت
-          سے ۱ رکعت پڑھیں جس میں دعائے قنوت ہے۔
+          {t.witrNote}
         </p>
 
-        {WITR_OPTIONS.map((option) => (
+        {WITR_OPTIONS.map((raw) => {
+          const option = witrOption(raw, lang)
+          return (
           <Link key={option.id} className="bigbtn" to={`/witr/${option.id}`}>
             <span className="bigbtn__icon" aria-hidden="true">
               {option.id === 'one' ? '☝️' : '🌙'}
@@ -24,8 +29,9 @@ export default function WitrPicker() {
               {option.name}
               <span className="bigbtn__hint">{option.hint}</span>
             </span>
-          </Link>
-        ))}
+            </Link>
+          )
+        })}
       </main>
     </>
   )

@@ -1,15 +1,18 @@
 
 /** «قدم ۴ از ۱۳» — so he always knows where he is and how much is left. */
+import { useLang } from '../hooks/useLang.js'
+
 export default function ProgressBar({ current, total, rakah }) {
+  const { t } = useLang()
   const percent = Math.round((current / total) * 100)
 
   return (
     <div>
       <div className="progress__row">
         <span>
-          قدم {current} از {total}
+          {t.step} {current} {t.of} {total}
         </span>
-        {rakah ? <span>{rakah} رکعت</span> : null}
+        {rakah ? <span>{rakah} {t.rakah}</span> : null}
       </div>
       <div
         className="progress__track"

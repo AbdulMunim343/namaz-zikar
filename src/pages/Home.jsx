@@ -2,6 +2,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import FontSizeControl from '../components/FontSizeControl.jsx'
 import { readResume, clearResume } from '../components/StepPlayer.jsx'
 import { PRAYERS } from '../data/namaz.js'
+import LangSwitch from '../components/LangSwitch.jsx'
+import { useLang } from '../hooks/useLang.js'
+import { prayerName } from '../lib/lang.js'
 
 /**
  * مرکزی صفحہ — نماز والا صفحہ
@@ -10,6 +13,7 @@ import { PRAYERS } from '../data/namaz.js'
  * starting a prayer is one tap. وتر and اذکار are in the bottom tab bar.
  */
 export default function Home() {
+  const { t, lang } = useLang()
   const navigate = useNavigate()
   const resume = readResume()
 
@@ -17,14 +21,14 @@ export default function Home() {
     <>
       <header className="topbar">
         <span style={{ minWidth: 52 }} aria-hidden="true" />
-        <h1 className="topbar__title">نماز و اذکار</h1>
+        <h1 className="topbar__title">{t.appName}</h1>
         <FontSizeControl />
       </header>
 
       <main className="page">
         <div className="hero">
-          <p className="hero__salam">السلام علیکم</p>
-          <p className="hero__sub">جو پڑھنا ہے اُس پر اُنگلی رکھیں</p>
+          <p className="hero__salam">{t.salam}</p>
+          <p className="hero__sub">{t.tagline}</p>
         </div>
 
         {resume ? (
@@ -37,31 +41,32 @@ export default function Home() {
               ↻
             </span>
             <span className="bigbtn__label">
-              جاری رکھیں
+              {t.resume}
               <span className="bigbtn__hint">
-                {resume.title} — قدم {resume.index + 1} از {resume.total}
+                {resume.title} — {t.step} {resume.index + 1} {t.of} {resume.total}
               </span>
             </span>
           </button>
         ) : null}
 
-        <h2 className="section">کون سی نماز؟</h2>
+        <h2 className="section">{t.whichPrayer}</h2>
         <div className="picker">
           {PRAYERS.map((prayer) => (
             <Link key={prayer.id} className="picker__card" to={`/namaz/${prayer.id}`}>
-              <span className="picker__name">{prayer.name}</span>
-              <span className="picker__count">{prayer.fard} رکعت فرض</span>
+              <span className="picker__name">{prayerName(prayer, lang)}</span>
+              <span className="picker__count">
+                {prayer.fard} {t.rakahsFard}
+              </span>
             </Link>
           ))}
         </div>
 
-        <p className="note">
-          وتر، صبح و شام کے اذکار، اور سونے کے اذکار کے لیے نیچے والی پٹی استعمال کریں۔
-        </p>
+        <LangSwitch />
+
+        <p className="note">{t.tabHint}</p>
 
         <p className="note">
-          یہاں صرف فرض رکعتیں سکھائی گئی ہیں۔ سنتیں بھی اسی طریقے سے پڑھی جاتی ہیں، بس
-          نیت رکعتوں کی تعداد کی کریں۔
+          {t.fardNote}
         </p>
 
         {resume ? (
@@ -73,7 +78,7 @@ export default function Home() {
               navigate(0)
             }}
           >
-            محفوظ شدہ جگہ بھول جائیں
+            {t.forget}
           </button>
         ) : null}
       </main>

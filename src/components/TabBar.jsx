@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { useLang } from '../hooks/useLang.js'
 
 /**
  * نیچے والی پٹی — ایپ کی طرح
@@ -8,13 +9,15 @@ import { NavLink } from 'react-router-dom'
  * Hidden while a prayer is in progress, so nothing competes with «اگلا قدم».
  */
 const TABS = [
-  { to: '/', icon: '🕌', label: 'نماز' },
-  { to: '/witr', icon: '🌙', label: 'وتر' },
-  { to: '/azkaar', icon: '📿', label: 'اذکار' },
-  { to: '/night', icon: '🛏️', label: 'رات' },
+  { to: '/', icon: '🕌', key: 'namaz' },
+  { to: '/witr', icon: '🌙', key: 'witr' },
+  { to: '/azkaar', icon: '📿', key: 'azkaar' },
+  { to: '/night', icon: '🛏️', key: 'night' },
 ]
 
 export default function TabBar() {
+  const { t } = useLang()
+
   return (
     <nav className="tabbar">
       {TABS.map((tab) => (
@@ -27,7 +30,7 @@ export default function TabBar() {
           <span className="tabbar__icon" aria-hidden="true">
             {tab.icon}
           </span>
-          <span className="tabbar__label">{tab.label}</span>
+          <span className="tabbar__label">{t.tabs[tab.key]}</span>
         </NavLink>
       ))}
     </nav>

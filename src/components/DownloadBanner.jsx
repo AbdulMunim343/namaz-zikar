@@ -16,7 +16,11 @@ function isInsideApp() {
   return window.Capacitor?.isNativePlatform?.() === true
 }
 
+import { useLang } from '../hooks/useLang.js'
+
 export default function DownloadBanner() {
+  const { t } = useLang()
+
   if (isInsideApp()) return null
 
   return (
@@ -26,8 +30,8 @@ export default function DownloadBanner() {
           ⬇️
         </span>
         <span className="apkbar__text">
-          اینڈرائیڈ ایپ ڈاؤن لوڈ کریں
-          <span className="apkbar__hint">فون میں انسٹال کر لیں — انٹرنیٹ کے بغیر چلے گی</span>
+          {t.apkTitle}
+          <span className="apkbar__hint">{t.apkHint}</span>
         </span>
       </a>
     </div>

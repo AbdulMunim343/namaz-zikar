@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import FontSizeControl from './FontSizeControl.jsx'
+import { useLang } from '../hooks/useLang.js'
 
 /**
  * اوپر کی پٹی — گھر کا بٹن، عنوان، اور تحریر کا سائز
@@ -9,12 +10,13 @@ import FontSizeControl from './FontSizeControl.jsx'
  * means the same place.
  */
 export default function TopBar({ title, onHome }) {
+  const { t } = useLang()
   const navigate = useNavigate()
   const goHome = onHome || (() => navigate('/'))
 
   return (
     <header className="topbar">
-      <button type="button" className="topbar__btn" onClick={goHome} aria-label="مرکزی صفحہ">
+      <button type="button" className="topbar__btn" onClick={goHome} aria-label={t.home}>
         <span aria-hidden="true">🏠</span>
       </button>
       <h1 className="topbar__title">{title}</h1>

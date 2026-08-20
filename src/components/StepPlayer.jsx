@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from './TopBar.jsx'
 import { stop as stopSpeech } from '../lib/speech.js'
+import { useLang } from '../hooks/useLang.js'
+import { localizeStep } from '../lib/lang.js'
 import ProgressBar from './ProgressBar.jsx'
 import AudioButton from './AudioButton.jsx'
 
@@ -41,11 +43,12 @@ export function readResume() {
  * @param {number} startAt    step index to open on (used by «جاری رکھیں»)
  */
 export default function StepPlayer({ title, steps, path, startAt = 0 }) {
+  const { t, lang } = useLang()
   const navigate = useNavigate()
   const [index, setIndex] = useState(() => Math.min(Math.max(startAt, 0), steps.length - 1))
   const [finished, setFinished] = useState(false)
 
-  const step = steps[index]
+  const step = localizeStep(steps[index], lang)
   const pageRef = useRef(null)
 
   // Remember where he is, so closing the phone mid-prayer is not a fresh start.
@@ -89,8 +92,10 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
             <div className="done__mark" aria-hidden="true">
               ✅
             </div>
-            <h2 className="done__title">ماشاءاللہ! {title} مکمل ہو گئی</h2>
-            <p className="done__text">اللہ آپ کی نماز قبول فرمائے۔</p>
+            <h2 className="done__title">
+              {t.doneMashallah} {title} {t.doneTitle}
+            </h2>
+            <p className="done__text">{t.doneText}</p>
           </div>
         </main>
         <div className="actionbar actionbar--stack">
@@ -99,14 +104,14 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
             className="btn-primary"
             onClick={() => navigate('/azkaar', { state: { tab: 'after' } })}
           >
-            🕌 نماز کے بعد کے اذکار
+            {t.afterNamazCta}
           </button>
           <div className="actionbar__row">
             <button type="button" className="btn-secondary" onClick={restart}>
-              دوبارہ پڑھیں
+              {t.again}
             </button>
             <button type="button" className="btn-secondary" onClick={() => navigate('/')}>
-              مرکزی صفحہ
+              {t.home}
             </button>
           </div>
         </div>
@@ -126,10 +131,14 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
           <h2 className="step__title">{step.title}</h2>
           <p className="step__do">{step.do}</p>
 
-          {step.times ? <span className="step__count">{step.times} بار</span> : null}
+          {step.times ? <span className="step__count">{step.times} {t.times}</span> : null}
 
           {step.arabic ? <p className="arabic">{step.arabic}</p> : null}
-          {step.translit ? <p className="translit">{step.translit}</p> : null}
+          {step.translit ? (
+            <p className="translit" dir="rtl" lang="ur">
+              {step.translit}
+            </p>
+          ) : null}
           {step.meaning ? <p className="meaning">{step.meaning}</p> : null}
 
           {step.arabic ? (
@@ -148,7 +157,9 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
                     {option.name}
                   </h3>
                   <p className="arabic">{option.arabic}</p>
-                  <p className="translit">{option.translit}</p>
+                  <p className="translit" dir="rtl" lang="ur">
+                    {option.translit}
+                  </p>
                   <p className="meaning">{option.meaning}</p>
                   <AudioButton
                     id={`${step.id}-${option.id}`}
@@ -165,10 +176,10 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
 
       <div className="actionbar">
         <button type="button" className="btn-primary" onClick={next}>
-          {isLast ? 'مکمل کریں' : 'اگلا قدم ←'}
+          {isLast ? t.finish : t.nextStep}
         </button>
         <button type="button" className="btn-secondary" onClick={back} disabled={index === 0}>
-          → پیچھے
+          {t.back}
         </button>
       </div>
     </>

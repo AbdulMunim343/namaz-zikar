@@ -21,6 +21,8 @@
 - درمیان میں موبائل بند ہو جائے تو اگلی بار **«جاری رکھیں»** کا بٹن آ جاتا ہے۔
 - انٹرنیٹ کے بغیر بھی چلتی ہے۔
 - **اینڈرائیڈ ایپ** بھی موجود ہے — اوپر والی پٹی سے ڈاؤن لوڈ کر لیں۔
+- مرکزی صفحے پر **اردو | English** کا بٹن — انگریزی میں انٹرفیس، ہدایات اور ترجمہ
+  انگریزی ہو جاتے ہیں، عربی اور اردو تلفظ ویسے کے ویسے رہتے ہیں۔
 
 نماز کا طریقہ **اہلحدیث** مسلک کے مطابق ہے (رفع الیدین، آمین بلند آواز سے، ہاتھ
 سینے پر)۔ وتر دو الگ نمازیں ہیں: پہلے ۲ رکعت پڑھ کر سلام، پھر الگ نیت سے ۱ رکعت
@@ -97,6 +99,8 @@ npm run preview    # serve the production build locally
 | `src/data/nightAzkaar.js` | سونے کے اذکار — the bedtime duas |
 | `src/data/afterNamazAzkaar.js` | نماز کے بعد کے اذکار — the post-prayer duas |
 | `src/lib/sfx.js` | Counter tick and completion chime |
+| `src/data/en.js` | All English text — interface, instructions, meanings |
+| `src/lib/lang.js` | Language store and the localise helpers |
 | `src/data/azkaar.js` | The short morning/evening duas |
 | `src/App.jsx` | App shell — routes plus the bottom tab bar |
 | `src/components/TabBar.jsx` | Bottom tab bar (hidden during a prayer) |
@@ -115,6 +119,18 @@ viewport tall and never scrolls. The header and the bottom bar are flex children
 that hold their position, and only `.page` between them scrolls. During a prayer
 the tab bar is swapped for a pinned `.actionbar`, so «اگلا قدم» stays under the
 thumb no matter how long the dua on screen is.
+
+### Language
+
+Urdu is the default and stays the default; **اردو | English** on the home screen
+switches. English changes the interface, the step instructions and the meanings.
+The Arabic and the **Urdu transliteration stay as they are** in both languages —
+the transliteration keeps its Nastaliq font and right-to-left flow even when the
+page around it is English.
+
+All English lives in `src/data/en.js`, keyed by each step's `key` and each dua's
+`id`, so translations are never interleaved with the Urdu and anything missing
+falls back to Urdu rather than going blank.
 
 **Correcting a translation or adding a dua** means editing one entry in
 `src/data/` — no component changes needed.

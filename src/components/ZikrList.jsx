@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react'
 import ZikrCard from './ZikrCard.jsx'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
 import { tick, completed as playCompletedSound, preloadSfx } from '../lib/sfx.js'
+import { useLang } from '../hooks/useLang.js'
 
 const todayKey = () => new Date().toISOString().slice(0, 10)
 const EMPTY = { date: todayKey(), morning: {}, evening: {}, night: {}, after: {} }
@@ -13,6 +14,7 @@ const EMPTY = { date: todayKey(), morning: {}, evening: {}, night: {}, after: {}
  * one localStorage entry and reset on a new day.
  */
 export default function ZikrList({ bucket, zikrs, hint }) {
+  const { t } = useLang()
   const [progress, setProgress] = useLocalStorage('namaz:azkaar', EMPTY)
 
   useEffect(() => {
@@ -52,8 +54,8 @@ export default function ZikrList({ bucket, zikrs, hint }) {
     <>
       <p className="summary">
         {completed === zikrs.length
-          ? '✅ سب مکمل ہو گئے — ماشاءاللہ'
-          : `${completed} از ${zikrs.length} مکمل`}
+          ? t.allDone
+          : `${completed} ${t.of} ${zikrs.length} ${t.complete}`}
       </p>
 
       {hint ? <p className="note">{hint}</p> : null}
