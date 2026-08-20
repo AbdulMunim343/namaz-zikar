@@ -148,7 +148,8 @@ all and frequently no Arabic one**, so «سنیں» was silent on the very phone
 was built for. Text-to-speech remains only as a fallback for a dua with no
 recording, which is currently none of them.
 
-The reader is a **male voice** (espeak-ng's `ar+m3` variant at a low pitch).
+The reader is espeak-ng's own Arabic voice, which is male. Its `+m3` male
+variant was tried and reverted — it distorted the recitation badly.
 
 The clips are **synthesised with espeak-ng, not recited** — clear enough to
 follow the words, but robotic, and no substitute for a qari. Replacing any file
