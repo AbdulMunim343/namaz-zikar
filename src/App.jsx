@@ -27,7 +27,7 @@ export default function App() {
 
   return (
     <div className="app">
-      {browsing ? <DownloadBanner /> : null}
+      <DownloadBanner />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/namaz" element={<Navigate to="/" replace />} />

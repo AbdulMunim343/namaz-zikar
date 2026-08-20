@@ -176,10 +176,11 @@ body { overscroll-behavior: none; }
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 56px;
+  min-height: 52px;
   padding: 6px 14px;
   text-decoration: none;
   color: var(--ink);
+  justify-content: center;
 }
 
 .apkbar__icon { font-size: 1.4rem; line-height: 1; }
@@ -196,15 +197,6 @@ body { overscroll-behavior: none; }
   font-weight: 400;
   color: var(--ink-soft);
   line-height: 1.7;
-}
-
-.apkbar__close {
-  flex: 0 0 auto;
-  width: 52px;
-  border: 0;
-  background: transparent;
-  color: var(--ink-soft);
-  font-size: 1.1rem;
 }
 
 /* ---------- top bar ---------- */
