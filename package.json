@@ -6,10 +6,12 @@
   "description": "نماز، وتر اور صبح و شام کے اذکار — آسان اردو رہنمائی",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/audio-manifest.mjs && vite build",
     "preview": "vite preview",
     "android:sync": "npm run build && npx cap sync android",
-    "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug"
+    "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug",
+    "audio:manifest": "node scripts/audio-manifest.mjs",
+    "audio:texts": "node scripts/audio-texts.mjs"
   },
   "dependencies": {
     "@capacitor-community/text-to-speech": "^6.1.0",

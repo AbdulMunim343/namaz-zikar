@@ -17,6 +17,8 @@
  * Capacitor plugin; in a browser we use speechSynthesis as before.
  */
 
+import { hasRecording } from '../data/audioManifest.js'
+
 // Vite inlines import.meta.env at build time; the guard keeps this module
 // importable in plain Node (where it is undefined) so it can be unit-tested.
 const BASE = typeof import.meta.env !== 'undefined' ? import.meta.env.BASE_URL : '/'
@@ -301,26 +303,12 @@ function speak(id, { arabic, urdu }) {
  * @param {string} id    unique id of the step/zikr being read
  * @param {object} item  { arabic, urdu, audio }
  */
-/**
- * Is there really a recording at this name?
- *
- * This has to be checked rather than assumed. Capacitor's local server answers
- * unknown paths with index.html — HTTP 200, text/html — so a missing mp3 looks
- * like a successful load inside the app: no error ever fires, the fallback
- * never runs, and «سنیں» sits silent. (A normal web server 404s, which is why
- * this only ever broke on the phone.) So confirm the response is actually audio
- * before handing it to an <audio> element.
+/*
+ * Whether a recording exists is decided at build time (src/data/audioManifest.js),
+ * not by asking the server. Asking was unreliable inside the APK: Capacitor's
+ * local server answers unknown paths with index.html — HTTP 200 — so a missing
+ * file looked present, no error ever fired, and nothing was ever heard.
  */
-async function recordingExists(file) {
-  try {
-    const res = await fetch(`${BASE}audio/${file}`, { method: 'HEAD' })
-    if (!res.ok) return false
-    const type = res.headers.get('content-type') || ''
-    return type.toLowerCase().startsWith('audio/')
-  } catch {
-    return false
-  }
-}
 
 /** How long to wait for a recording to actually start before giving up on it. */
 const AUDIO_START_TIMEOUT_MS = 2500
@@ -367,11 +355,8 @@ export function play(id, item) {
     return
   }
 
-  recordingExists(item.audio).then((exists) => {
-    if (currentId !== id) return // stopped, or another dua started meanwhile
-    if (exists) playRecording(id, item)
-    else speak(id, item) // no recording yet — the phone reads it instead
-  })
+  if (hasRecording(item.audio)) playRecording(id, item)
+  else speak(id, item) // no recording for this one — the phone reads it instead
 }
 
 /* ---- subscription, for useSyncExternalStore ---- */

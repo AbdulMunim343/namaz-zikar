@@ -116,39 +116,32 @@ thumb no matter how long the dua on screen is.
 
 ### Audio
 
-Audio is entirely frontend. Each step carries an optional `audio` filename:
+**The recordings ship with the app.** 38 clips live in `public/audio/`, one per
+dua, and `src/data/audioManifest.js` (generated at build time) lists them. The
+🔊 «سنیں» button plays the bundled file; nothing depends on the phone.
 
-1. If a real recording exists at that name, the 🔊 «سنیں» button plays it.
-2. If not, the phone's own text-to-speech reads the Arabic and then the Urdu.
+That last point is the whole reason they exist. Speech previously came from the
+device's text-to-speech, and Android phones very often ship **no Urdu voice at
+all and frequently no Arabic one**, so «سنیں» was silent on the very phone this
+was built for. Text-to-speech remains only as a fallback for a dua with no
+recording, which is currently none of them.
 
-Step 1 checks with a `HEAD` request that the response is genuinely `audio/*`,
-rather than trusting that the file loaded. Capacitor's local server answers
-unknown paths with `index.html` — HTTP 200, `text/html` — so a missing mp3 looks
-like a successful load inside the app, no error ever fires, and the fallback
-would never run. A normal web server 404s, which is why that only broke on the
-phone.
+The clips are **synthesised with espeak-ng, not recited** — clear enough to
+follow the words, but robotic, and no substitute for a qari. Replacing any file
+in `public/audio/` with a real recording of the same name takes effect
+immediately, with no code change:
 
-The engine differs by platform. Android's WebView — what the APK runs — does
-not implement the Web Speech API at all, so `speechSynthesis` is silently
-missing there. Inside the app, speech therefore goes through the **native
-Android TTS engine** (`@capacitor-community/text-to-speech`, loaded lazily so
-the browser bundle never pulls it in); in a browser it uses `speechSynthesis`.
-Android 11+ also needs the `<queries>` TTS_SERVICE entry in the manifest, or the
-app cannot see the engine at all.
+```bash
+pip install espeakng-loader imageio-ffmpeg
+npm run audio:texts          # dump the Arabic of every dua
+python3 scripts/generate.py  # synthesise + encode into public/audio/
+npm run audio:manifest       # refresh the list (also runs on every build)
+```
 
-The reader is a **male voice** where the phone has one: `pickVoice()` matches the
-male Arabic and Urdu voices each platform ships (Maged, Hamed, Asad …) and rules
-out the female ones. If a device only has a female voice, it pitches it lower
-rather than refusing to speak.
-
-A separate ⏹ «روکیں» button stops playback — two buttons that each do one thing,
-rather than one button that changes meaning. Playback runs through a single
-shared controller (`src/lib/speech.js`), so only one dua can play at a time,
-«روکیں» on any card stops whatever is playing, and audio stops on its own when
-he moves to the next step or leaves the screen.
-
-So the app speaks today, and real recordings can be added later at any time —
-see [`public/audio/README.md`](public/audio/README.md).
+Whether a recording exists is decided from that build-time list rather than by
+asking the server. Asking was unreliable inside the APK: Capacitor's local
+server answers unknown paths with `index.html` — HTTP 200 — so a missing file
+looked present, no error fired, and nothing was ever heard.
 
 ### Deployment
 
