@@ -23,7 +23,25 @@ const BASE = typeof import.meta.env !== 'undefined' ? import.meta.env.BASE_URL :
 
 let currentId = null
 let currentAudio = null
+let lastError = null
 const listeners = new Set()
+
+/**
+ * Why nothing was heard, when nothing was heard. Speech can fail for reasons
+ * the reader can actually fix (no Arabic/Urdu voice installed), so the failure
+ * has to reach the screen instead of being swallowed.
+ *   'no-engine' — the device has no working text-to-speech at all
+ *   'no-voice'  — an engine, but no voice for Arabic/Urdu
+ */
+export function getError() {
+  return lastError
+}
+
+function setError(code) {
+  if (lastError === code) return
+  lastError = code
+  emit()
+}
 
 function emit() {
   listeners.forEach((fn) => fn())
@@ -43,18 +61,39 @@ export function isNative() {
 /* ------------------------------------------------------------------ */
 
 let nativeTts = null
+let nativeTtsLoad = null
 
-/** Loaded lazily so the browser bundle never pulls the native plugin in. */
-async function getNativeTts() {
-  if (nativeTts) return nativeTts
-  const mod = await import('@capacitor-community/text-to-speech')
-  nativeTts = mod.TextToSpeech
-  return nativeTts
+/**
+ * Loaded lazily so the browser bundle never pulls the native plugin in.
+ *
+ * The plugin object is returned **wrapped**. A Capacitor plugin is a Proxy that
+ * turns any property access into a native call, so resolving a promise with it
+ * directly makes the runtime probe it for `.then` — which the proxy answers by
+ * throwing "TextToSpeech.then() is not implemented". That rejection is what
+ * silenced audio in the app: the engine never finished loading.
+ */
+function getNativeTts() {
+  if (nativeTts) return Promise.resolve({ tts: nativeTts })
+  if (!nativeTtsLoad) {
+    nativeTtsLoad = import('@capacitor-community/text-to-speech').then((mod) => {
+      // Do not clobber an engine already in place (the tests install one).
+      if (!nativeTts) nativeTts = mod.TextToSpeech
+      return { tts: nativeTts }
+    })
+  }
+  return nativeTtsLoad
+}
+
+// Start loading as soon as the app opens rather than on the first tap, so a
+// slow or failed load shows up before he is waiting on a dua to be read.
+if (typeof window !== 'undefined' && window.Capacitor?.isNativePlatform?.()) {
+  getNativeTts().catch(() => setError('no-engine'))
 }
 
 /** Test seam: lets the unit tests supply a fake plugin. */
 export function __setNativeTts(impl) {
   nativeTts = impl
+  nativeTtsLoad = impl ? Promise.resolve({ tts: impl }) : null
 }
 
 /** Pick a male voice index from the engine's own voice list, if it offers one. */
@@ -82,30 +121,53 @@ async function nativeVoiceIndex(tts, lang) {
 async function speakNative(id, parts) {
   let tts
   try {
-    tts = await getNativeTts()
+    ;({ tts } = await getNativeTts())
   } catch {
+    setError('no-engine')
+    finished(id)
+    return
+  }
+  if (!tts) {
+    setError('no-engine')
     finished(id)
     return
   }
 
+  let spokeSomething = false
+
   for (const part of parts) {
     if (currentId !== id) return // stopped, or another dua started
-    try {
-      const voice = await nativeVoiceIndex(tts, part.lang)
-      await tts.speak({
-        text: part.text,
-        lang: part.lang,
-        rate: 0.85,
-        pitch: 1.0,
-        volume: 1.0,
-        category: 'ambient',
-        ...(voice === undefined ? {} : { voice }),
-      })
-    } catch {
-      // A language the device has no data for throws; carry on to the next part
-      // rather than leaving the button stuck on «چل رہا ہے…».
+
+    const voice = await nativeVoiceIndex(tts, part.lang)
+    // Most phones ship no Urdu voice and many no Arabic one, so try the exact
+    // locale first and then the bare language (ar-SA → ar) before giving up.
+    const langs = [part.lang, part.lang.split('-')[0]]
+
+    for (const lang of langs) {
+      if (currentId !== id) return
+      try {
+        await tts.speak({
+          text: part.text,
+          lang,
+          rate: 0.85,
+          pitch: 1.0,
+          volume: 1.0,
+          category: 'ambient',
+          ...(voice === undefined ? {} : { voice }),
+        })
+        spokeSomething = true
+        break
+      } catch {
+        // This locale has no voice data — try the next, then the next part.
+      }
     }
   }
+
+  // Every attempt failed: the phone has an engine but no Arabic/Urdu voice.
+  // Tell him, rather than leaving him tapping a button that does nothing.
+  if (spokeSomething) setError(null)
+  else setError('no-voice')
+
   finished(id)
 }
 
@@ -166,7 +228,9 @@ if (typeof window !== 'undefined' && window.speechSynthesis) {
 export function stop() {
   if (isNative() && nativeTts) {
     try {
-      nativeTts.stop()
+      // Plugin calls reject asynchronously, so the promise needs its own catch;
+      // try/catch alone would leave an unhandled rejection.
+      Promise.resolve(nativeTts.stop()).catch(() => {})
     } catch {
       /* nothing was speaking */
     }
@@ -296,6 +360,7 @@ export function play(id, item) {
   stop()
   currentId = id
   emit()
+  if (!isNative()) setError(null)
 
   if (!item.audio) {
     speak(id, item)

@@ -9,14 +9,22 @@ import { useSpeech } from '../hooks/useSpeech.js'
  * «روکیں» is enabled whenever *anything* in the app is playing, so whatever is
  * making noise can be stopped from the card in front of him.
  */
+const ERROR_TEXT = {
+  'no-engine':
+    'اس فون میں آواز پڑھنے والا سافٹ ویئر نہیں ملا۔ Play Store سے «Speech Recognition & Synthesis» (Google) انسٹال کریں۔',
+  'no-voice':
+    'اس فون میں عربی/اردو آواز نصب نہیں ہے۔ سیٹنگز → زبان اور اِن پُٹ → Text-to-speech → زبانیں انسٹال کریں، پھر دوبارہ کوشش کریں۔',
+}
+
 export default function AudioButton({ id, arabic, urdu, audio }) {
-  const { playingId, isPlaying, play, stop } = useSpeech()
+  const { playingId, isPlaying, error, play, stop } = useSpeech()
 
   if (!arabic && !urdu) return null
 
   const thisIsPlaying = playingId === id
 
   return (
+    <>
     <div className="audiorow">
       <button
         type="button"
@@ -38,5 +46,7 @@ export default function AudioButton({ id, arabic, urdu, audio }) {
         روکیں
       </button>
     </div>
+    {error ? <p className="audioerr">{ERROR_TEXT[error]}</p> : null}
+    </>
   )
 }

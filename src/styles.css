@@ -581,6 +581,18 @@ body { overscroll-behavior: none; }
   color: var(--ink-soft);
 }
 
+/* Shown only when the phone genuinely cannot speak — never in normal use. */
+.audioerr {
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  border: 1px solid var(--stop);
+  border-radius: 14px;
+  background: var(--surface-2);
+  color: var(--ink);
+  font-size: calc(0.85rem * var(--scale));
+  text-align: center;
+}
+
 /* ---------- navigation ---------- */
 
 /* Pinned to the bottom of the shell: «اگلا قدم» is always under his thumb,
