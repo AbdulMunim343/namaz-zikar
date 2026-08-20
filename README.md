@@ -35,7 +35,7 @@ Plain frontend — React + Vite, no backend and no database.
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173/namaz-zikar/
+npm run dev        # http://localhost:5173/
 npm run build      # production build into dist/
 npm run preview    # serve the production build locally
 ```
@@ -69,9 +69,18 @@ see [`public/audio/README.md`](public/audio/README.md).
 
 ### Deployment
 
-Pushing to `main` builds and publishes to GitHub Pages via
-`.github/workflows/deploy.yml`. Enable it once under
+The build's base path comes from the `VITE_BASE` environment variable and
+defaults to `/`, the domain root.
+
+**Vercel** (or any host serving from a domain root, or a custom domain) needs no
+configuration — the defaults are already correct. Vercel auto-detects Vite:
+build command `npm run build`, output directory `dist`. Routing is hash-based
+(`/#/namaz`), so no rewrite rules are needed either.
+
+**GitHub Pages** serves the repo from the `/namaz-zikar/` sub-path instead, so
+`.github/workflows/deploy.yml` sets `VITE_BASE=/namaz-zikar/` for that build.
+Pushing to `main` publishes automatically; enable it once under
 **Settings → Pages → Source: GitHub Actions**.
 
-The site is served from `/namaz-zikar/` (set as `base` in `vite.config.js`). To
-host it at a domain root instead, build with `npm run build -- --base=/`.
+If you ever host under a different sub-path, build with
+`VITE_BASE=/your-path/ npm run build`.

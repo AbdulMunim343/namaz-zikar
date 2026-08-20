@@ -2,10 +2,11 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// GitHub Pages serves this repo from /namaz-zikar/.
-// Use `npm run build -- --base=/` if you ever host it at a domain root.
+// Vercel (and any custom domain) serves the app from the domain root, so '/'
+// is the default. GitHub Pages serves it from a sub-path instead — the Pages
+// workflow sets VITE_BASE=/namaz-zikar/ for that build only.
 export default defineConfig({
-  base: '/namaz-zikar/',
+  base: process.env.VITE_BASE || '/',
   plugins: [
     react(),
     VitePWA({
