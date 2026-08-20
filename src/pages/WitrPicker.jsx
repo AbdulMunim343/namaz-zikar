@@ -3,6 +3,7 @@ import TopBar from '../components/TopBar.jsx'
 import { WITR_OPTIONS } from '../data/witr.js'
 import { useLang } from '../hooks/useLang.js'
 import { witrOption } from '../lib/lang.js'
+import Icon from '../components/Icon.jsx'
 
 /**
  * وتر دو الگ نمازیں ہیں: پہلے ۲ رکعت پڑھ کر سلام، پھر الگ نیت سے ۱ رکعت۔
@@ -23,7 +24,7 @@ export default function WitrPicker() {
           return (
           <Link key={option.id} className="bigbtn" to={`/witr/${option.id}`}>
             <span className="bigbtn__icon" aria-hidden="true">
-              {option.id === 'one' ? '☝️' : '🌙'}
+              <Icon name={option.id === 'one' ? 'one' : 'two'} />
             </span>
             <span className="bigbtn__label">
               {option.name}

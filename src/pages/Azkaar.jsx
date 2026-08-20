@@ -6,8 +6,10 @@ import { getAzkaar, defaultTimeOfDay } from '../data/azkaar.js'
 import { getAfterNamazAzkaar } from '../data/afterNamazAzkaar.js'
 import { useLang } from '../hooks/useLang.js'
 import { localizeZikr, localizeZikrForTime } from '../lib/lang.js'
+import Icon from '../components/Icon.jsx'
 
 const TAB_IDS = ['morning', 'evening', 'after']
+const TAB_ICONS = { morning: 'sun', evening: 'moon', after: 'mosque' }
 
 export default function Azkaar() {
   const { t, lang } = useLang()
@@ -29,6 +31,7 @@ export default function Azkaar() {
         <div className="tabs tabs--three">
           {TAB_IDS.map((id) => (
             <button key={id} type="button" aria-pressed={tab === id} onClick={() => setTab(id)}>
+              <Icon name={TAB_ICONS[id]} />
               {labels[id]}
             </button>
           ))}

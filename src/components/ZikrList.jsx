@@ -3,6 +3,7 @@ import ZikrCard from './ZikrCard.jsx'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
 import { tick, completed as playCompletedSound, preloadSfx } from '../lib/sfx.js'
 import { useLang } from '../hooks/useLang.js'
+import Icon from './Icon.jsx'
 
 const todayKey = () => new Date().toISOString().slice(0, 10)
 const EMPTY = { date: todayKey(), morning: {}, evening: {}, night: {}, after: {} }
@@ -54,7 +55,7 @@ export default function ZikrList({ bucket, zikrs, hint }) {
     <>
       <p className="summary">
         {completed === zikrs.length
-          ? t.allDone
+          ? <><Icon name="check" /> {t.allDone}</>
           : `${completed} ${t.of} ${zikrs.length} ${t.complete}`}
       </p>
 

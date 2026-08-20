@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useLang } from '../hooks/useLang.js'
+import Icon from './Icon.jsx'
 
 /**
  * نیچے والی پٹی — ایپ کی طرح
@@ -9,10 +10,10 @@ import { useLang } from '../hooks/useLang.js'
  * Hidden while a prayer is in progress, so nothing competes with «اگلا قدم».
  */
 const TABS = [
-  { to: '/', icon: '🕌', key: 'namaz' },
-  { to: '/witr', icon: '🌙', key: 'witr' },
-  { to: '/azkaar', icon: '📿', key: 'azkaar' },
-  { to: '/night', icon: '🛏️', key: 'night' },
+  { to: '/', icon: 'mosque', key: 'namaz' },
+  { to: '/witr', icon: 'moon', key: 'witr' },
+  { to: '/azkaar', icon: 'beads', key: 'azkaar' },
+  { to: '/night', icon: 'bed', key: 'night' },
 ]
 
 export default function TabBar() {
@@ -27,9 +28,7 @@ export default function TabBar() {
           end={tab.to === '/'}
           className={({ isActive }) => (isActive ? 'tabbar__item is-active' : 'tabbar__item')}
         >
-          <span className="tabbar__icon" aria-hidden="true">
-            {tab.icon}
-          </span>
+          <Icon name={tab.icon} className="tabbar__icon" />
           <span className="tabbar__label">{t.tabs[tab.key]}</span>
         </NavLink>
       ))}

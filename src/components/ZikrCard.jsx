@@ -1,5 +1,6 @@
 import AudioButton from './AudioButton.jsx'
 import { useLang } from '../hooks/useLang.js'
+import Icon from './Icon.jsx'
 
 /**
  * ایک ذکر — متن اور بڑا گنتی کا بٹن
@@ -18,7 +19,7 @@ export default function ZikrCard({ zikr, count, onTap, onReset }) {
         <h2 className="zikr__name">{zikr.name}</h2>
         {done ? (
           <span className="zikr__tick" role="img" aria-label={t.complete}>
-            ✅
+            <Icon name="check" />
           </span>
         ) : (
           <span className="picker__count">{zikr.times} {t.times}</span>

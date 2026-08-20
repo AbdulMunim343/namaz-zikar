@@ -1,5 +1,6 @@
 import { useSpeech } from '../hooks/useSpeech.js'
 import { useLang } from '../hooks/useLang.js'
+import Icon from './Icon.jsx'
 
 /**
  * سنیں / روکیں — دو الگ بٹن
@@ -42,7 +43,7 @@ export default function AudioButton({ id, arabic, urdu, audio }) {
         data-playing={thisIsPlaying}
         onClick={() => play(id, { arabic, urdu, audio })}
       >
-        <span aria-hidden="true">🔊</span>
+        <Icon name="speaker" />
         {thisIsPlaying ? t.playing : t.listen}
       </button>
 
@@ -52,7 +53,7 @@ export default function AudioButton({ id, arabic, urdu, audio }) {
         onClick={stop}
         disabled={!isPlaying}
       >
-        <span aria-hidden="true">⏹</span>
+        <Icon name="stop" />
         {t.stop}
       </button>
     </div>

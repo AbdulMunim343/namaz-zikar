@@ -183,8 +183,6 @@ body { overscroll-behavior: none; }
   justify-content: center;
 }
 
-.apkbar__icon { font-size: 1.4rem; line-height: 1; }
-
 .apkbar__text {
   font-size: calc(0.95rem * var(--scale));
   font-weight: 700;
@@ -302,7 +300,6 @@ body { overscroll-behavior: none; }
   background: var(--green-soft);
   display: grid;
   place-items: center;
-  font-size: 2rem;
   line-height: 1;
 }
 
@@ -326,6 +323,34 @@ body { overscroll-behavior: none; }
 }
 
 .bigbtn--resume .bigbtn__icon { background: rgba(169, 124, 47, 0.2); }
+
+/* ---------- آئیکن ---------- */
+
+/* Icons scale with the text, so A+ / A− enlarges them too. */
+.icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex: 0 0 auto;
+  vertical-align: -0.2em;
+}
+
+.tabbar__icon { width: 1.7rem; height: 1.7rem; }
+
+.bigbtn__icon .icon { width: 2rem; height: 2rem; }
+
+.apkbar__icon { width: 1.6rem; height: 1.6rem; color: var(--gold); }
+
+.topbar__btn .icon { width: 1.5rem; height: 1.5rem; }
+
+.audiobtn .icon { width: 1.25em; height: 1.25em; }
+
+.zikr__tick .icon { width: 1.7rem; height: 1.7rem; color: var(--green); }
+
+.done__mark .icon { width: 3.2rem; height: 3.2rem; color: var(--green); }
+
+.tabs button .icon { margin-inline-end: 6px; }
+
+.summary .icon { color: var(--green); }
 
 /* ---------- زبان switch ---------- */
 
@@ -725,8 +750,6 @@ body { overscroll-behavior: none; }
   background: var(--green-soft);
 }
 
-.tabbar__icon { font-size: 1.5rem; line-height: 1; }
-
 .tabbar__label {
   font-size: calc(0.75rem * var(--scale));
   font-weight: 700;
@@ -746,7 +769,7 @@ body { overscroll-behavior: none; }
   gap: 12px;
 }
 
-.done__mark { font-size: 3.4rem; line-height: 1; }
+.done__mark { line-height: 1; }
 
 .done__title {
   margin: 0;
@@ -813,7 +836,7 @@ body { overscroll-behavior: none; }
   color: var(--green);
 }
 
-.zikr__tick { font-size: 1.6rem; line-height: 1; }
+.zikr__tick { line-height: 1; }
 
 .counter {
   align-self: center;

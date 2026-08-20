@@ -4,6 +4,7 @@ import TopBar from './TopBar.jsx'
 import { stop as stopSpeech } from '../lib/speech.js'
 import { useLang } from '../hooks/useLang.js'
 import { localizeStep } from '../lib/lang.js'
+import Icon from './Icon.jsx'
 import ProgressBar from './ProgressBar.jsx'
 import AudioButton from './AudioButton.jsx'
 
@@ -90,7 +91,7 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
         <main className="page" ref={pageRef}>
           <div className="done">
             <div className="done__mark" aria-hidden="true">
-              ✅
+              <Icon name="check" />
             </div>
             <h2 className="done__title">
               {t.doneMashallah} {title} {t.doneTitle}
@@ -104,7 +105,7 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
             className="btn-primary"
             onClick={() => navigate('/azkaar', { state: { tab: 'after' } })}
           >
-            {t.afterNamazCta}
+            <Icon name="mosque" /> {t.afterNamazCta}
           </button>
           <div className="actionbar__row">
             <button type="button" className="btn-secondary" onClick={restart}>

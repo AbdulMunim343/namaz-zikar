@@ -17,6 +17,7 @@ function isInsideApp() {
 }
 
 import { useLang } from '../hooks/useLang.js'
+import Icon from './Icon.jsx'
 
 export default function DownloadBanner() {
   const { t } = useLang()
@@ -26,9 +27,7 @@ export default function DownloadBanner() {
   return (
     <div className="apkbar">
       <a className="apkbar__link" href={APK_URL} download>
-        <span className="apkbar__icon" aria-hidden="true">
-          ⬇️
-        </span>
+        <Icon name="download" className="apkbar__icon" />
         <span className="apkbar__text">
           {t.apkTitle}
           <span className="apkbar__hint">{t.apkHint}</span>

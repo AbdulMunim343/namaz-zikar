@@ -5,6 +5,7 @@ import { PRAYERS } from '../data/namaz.js'
 import LangSwitch from '../components/LangSwitch.jsx'
 import { useLang } from '../hooks/useLang.js'
 import { prayerName } from '../lib/lang.js'
+import Icon from '../components/Icon.jsx'
 
 /**
  * مرکزی صفحہ — نماز والا صفحہ
@@ -38,7 +39,7 @@ export default function Home() {
             onClick={() => navigate(resume.path, { state: { startAt: resume.index } })}
           >
             <span className="bigbtn__icon" aria-hidden="true">
-              ↻
+              <Icon name="resume" />
             </span>
             <span className="bigbtn__label">
               {t.resume}

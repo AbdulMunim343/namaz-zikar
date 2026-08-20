@@ -101,6 +101,7 @@ npm run preview    # serve the production build locally
 | `src/lib/sfx.js` | Counter tick and completion chime |
 | `src/data/en.js` | All English text — interface, instructions, meanings |
 | `src/lib/lang.js` | Language store and the localise helpers |
+| `src/components/Icon.jsx` | Inline SVG icon set (no emoji anywhere) |
 | `src/data/azkaar.js` | The short morning/evening duas |
 | `src/App.jsx` | App shell — routes plus the bottom tab bar |
 | `src/components/TabBar.jsx` | Bottom tab bar (hidden during a prayer) |
