@@ -53,6 +53,8 @@ Drop in `.mp3` files named exactly as listed below.
 
 ### سونے کے اذکار (`src/data/nightAzkaar.js`)
 
+`night-bismika.mp3` — سوتے وقت کی دعا
+
 `baqarah-285.mp3`, `baqarah-286.mp3` — سورۃ البقرہ کا آخری رکوع
 
 ### مشورے (tips)
