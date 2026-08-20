@@ -5,6 +5,10 @@
 یہ ویب سائٹ خاص طور پر ایسے شخص کے لیے بنائی گئی ہے جو بیماری کے بعد نماز کا
 طریقہ بھول گیا ہو۔ اس لیے:
 
+- **موبائل ایپ جیسی ساخت** — اوپر کی پٹی اور نیچے کے بٹن اپنی جگہ جمے رہتے ہیں،
+  صرف درمیان کا حصہ اوپر نیچے ہوتا ہے۔
+- نیچے تین خانوں والی پٹی: **نماز | وتر | اذکار** — ہر وقت ایک ہی دبانے کی دوری پر۔
+- **«اگلا قدم» ہمیشہ نیچے** انگوٹھے کے نیچے رہتا ہے، دعا کتنی ہی لمبی ہو۔
 - پانچوں نمازیں **مرکزی صفحے پر ہی** ہیں — ایک ہی دبانے سے نماز شروع۔
 - ایک وقت میں **صرف ایک قدم** سکرین پر آتا ہے — کچھ یاد رکھنے کی ضرورت نہیں۔
 - تحریر **بہت بڑی** ہے، اور اوپر «A+» سے اور بھی بڑی کی جا سکتی ہے۔
@@ -48,12 +52,22 @@ npm run preview    # serve the production build locally
 | `src/data/namaz.js` | Prayer definitions and the step builder |
 | `src/data/witr.js` | Witr steps, including Dua-e-Qunoot |
 | `src/data/azkaar.js` | The short morning/evening duas |
+| `src/App.jsx` | App shell — routes plus the bottom tab bar |
+| `src/components/TabBar.jsx` | Bottom tab bar (hidden during a prayer) |
 | `src/components/StepPlayer.jsx` | The one-step-per-screen player (namaz + witr) |
 | `src/pages/Home.jsx` | Home screen — the five prayers, وتر and اذکار |
 | `src/components/ZikrCard.jsx` | One dua plus its tap-to-count circle |
 | `src/styles.css` | All styling: RTL, large type, light/dark |
 | `public/audio/` | Optional recordings — see the README in that folder |
 | `public/fonts/` | Self-hosted Noto Nastaliq Urdu + Amiri Quran (SIL OFL 1.1) |
+
+### Layout
+
+The app is a fixed shell, not a scrolling document: `.app` is exactly one
+viewport tall and never scrolls. The header and the bottom bar are flex children
+that hold their position, and only `.page` between them scrolls. During a prayer
+the tab bar is swapped for a pinned `.actionbar`, so «اگلا قدم» stays under the
+thumb no matter how long the dua on screen is.
 
 **Correcting a translation or adding a dua** means editing one entry in
 `src/data/` — no component changes needed.

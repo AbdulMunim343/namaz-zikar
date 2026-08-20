@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from './TopBar.jsx'
 import ProgressBar from './ProgressBar.jsx'
@@ -45,6 +45,7 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
   const [finished, setFinished] = useState(false)
 
   const step = steps[index]
+  const pageRef = useRef(null)
 
   // Remember where he is, so closing the phone mid-prayer is not a fresh start.
   useEffect(() => {
@@ -53,10 +54,9 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
   }, [finished, index, path, title, steps.length])
 
   // Each step is its own screen — always start reading from the top.
-  // (Scroll the window, not the element: scrollIntoView would tuck the
-  // progress bar underneath the sticky header.)
+  // Only .page scrolls in the app shell, so reset that, not the window.
   useEffect(() => {
-    window.scrollTo(0, 0)
+    if (pageRef.current) pageRef.current.scrollTop = 0
   }, [index, finished])
 
   const next = useCallback(() => {
@@ -80,7 +80,7 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
     return (
       <>
         <TopBar title={title} />
-        <main className="page">
+        <main className="page" ref={pageRef}>
           <div className="done">
             <div className="done__mark" aria-hidden="true">
               ✅
@@ -88,15 +88,15 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
             <h2 className="done__title">ماشاءاللہ! {title} مکمل ہو گئی</h2>
             <p className="done__text">اللہ آپ کی نماز قبول فرمائے۔</p>
           </div>
-          <div className="navbar">
-            <button type="button" className="btn-primary" onClick={restart}>
-              دوبارہ پڑھیں
-            </button>
-            <button type="button" className="btn-secondary" onClick={() => navigate('/')}>
-              مرکزی صفحہ
-            </button>
-          </div>
         </main>
+        <div className="actionbar">
+          <button type="button" className="btn-primary" onClick={restart}>
+            دوبارہ پڑھیں
+          </button>
+          <button type="button" className="btn-secondary" onClick={() => navigate('/')}>
+            مرکزی صفحہ
+          </button>
+        </div>
       </>
     )
   }
@@ -106,7 +106,7 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
   return (
     <>
       <TopBar title={title} />
-      <main className="page">
+      <main className="page" ref={pageRef}>
         <ProgressBar current={index + 1} total={steps.length} rakah={step.rakah} />
 
         <section className="step" key={step.id}>
@@ -121,16 +121,16 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
 
           <AudioButton arabic={step.arabic} urdu={step.meaning} audio={step.audio} />
         </section>
-
-        <div className="navbar">
-          <button type="button" className="btn-primary" onClick={next}>
-            {isLast ? 'نماز مکمل کریں' : 'اگلا قدم ←'}
-          </button>
-          <button type="button" className="btn-secondary" onClick={back} disabled={index === 0}>
-            → پچھلا قدم
-          </button>
-        </div>
       </main>
+
+      <div className="actionbar">
+        <button type="button" className="btn-primary" onClick={next}>
+          {isLast ? 'مکمل کریں' : 'اگلا قدم ←'}
+        </button>
+        <button type="button" className="btn-secondary" onClick={back} disabled={index === 0}>
+          → پیچھے
+        </button>
+      </div>
     </>
   )
 }

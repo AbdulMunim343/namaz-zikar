@@ -4,10 +4,10 @@ import { readResume, clearResume } from '../components/StepPlayer.jsx'
 import { PRAYERS } from '../data/namaz.js'
 
 /**
- * مرکزی صفحہ — سب کچھ ایک ہی صفحے پر
+ * مرکزی صفحہ — نماز والا صفحہ
  *
- * The five prayers sit directly on the home screen rather than behind a
- * separate picker page, so starting a prayer is one tap instead of two.
+ * The five prayers sit directly here rather than behind a picker page, so
+ * starting a prayer is one tap. وتر and اذکار are in the bottom tab bar.
  */
 export default function Home() {
   const navigate = useNavigate()
@@ -45,7 +45,7 @@ export default function Home() {
           </button>
         ) : null}
 
-        <h2 className="section">🕌 نماز</h2>
+        <h2 className="section">کون سی نماز؟</h2>
         <div className="picker">
           {PRAYERS.map((prayer) => (
             <Link key={prayer.id} className="picker__card" to={`/namaz/${prayer.id}`}>
@@ -55,26 +55,9 @@ export default function Home() {
           ))}
         </div>
 
-        <h2 className="section">اور</h2>
-        <Link className="bigbtn" to="/witr">
-          <span className="bigbtn__icon" aria-hidden="true">
-            🌙
-          </span>
-          <span className="bigbtn__label">
-            وتر
-            <span className="bigbtn__hint">تین رکعت، دعائے قنوت کے ساتھ</span>
-          </span>
-        </Link>
-
-        <Link className="bigbtn" to="/azkaar">
-          <span className="bigbtn__icon" aria-hidden="true">
-            📿
-          </span>
-          <span className="bigbtn__label">
-            صبح و شام کے اذکار
-            <span className="bigbtn__hint">چھوٹی اور آسان دعائیں</span>
-          </span>
-        </Link>
+        <p className="note">
+          وتر اور صبح و شام کے اذکار کے لیے نیچے والی پٹی استعمال کریں۔
+        </p>
 
         <p className="note">
           یہاں صرف فرض رکعتیں سکھائی گئی ہیں۔ سنتیں بھی اسی طریقے سے پڑھی جاتی ہیں، بس

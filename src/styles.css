@@ -102,21 +102,56 @@ body {
 
 button { font-family: inherit; color: inherit; cursor: pointer; }
 
+/* App-like touch behaviour: no blue tap flash, no accidental text selection
+   on controls, and no rubber-band bounce of the whole page. */
+button,
+a { -webkit-tap-highlight-color: transparent; }
+
+button,
+.tabbar__item,
+.bigbtn__label,
+.picker__name,
+.picker__count { user-select: none; -webkit-user-select: none; }
+
+body { overscroll-behavior: none; }
+
 /* ---------- layout ---------- */
 
+/* The app shell fills the viewport and never scrolls itself. Only .page
+   scrolls, so the header and the bottom bar stay put like a native app. */
 .app {
-  min-height: 100%;
+  height: 100vh;
+  height: 100dvh;
   max-width: 620px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   background: var(--bg);
+  position: relative;
+}
+
+/* On a wide screen, show it as a phone-shaped panel rather than a stretched page. */
+@media (min-width: 680px) {
+  body { background: var(--surface-2); }
+
+  .app {
+    height: min(880px, 100dvh);
+    margin-top: max(0px, calc((100dvh - 880px) / 2));
+    border-radius: 28px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+    border: 1px solid var(--line);
+  }
 }
 
 .page {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   padding: var(--page-pad);
-  padding-bottom: 40px;
+  padding-bottom: 28px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -125,8 +160,7 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 /* ---------- top bar ---------- */
 
 .topbar {
-  position: sticky;
-  top: 0;
+  flex: 0 0 auto;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -344,7 +378,13 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 /* ---------- step card ---------- */
 
+@keyframes step-in {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: none; }
+}
+
 .step {
+  animation: step-in 0.18s ease-out;
   background: var(--surface);
   border: 2px solid var(--line);
   border-radius: var(--radius);
@@ -438,6 +478,26 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 
 /* ---------- navigation ---------- */
 
+/* Pinned to the bottom of the shell: «اگلا قدم» is always under his thumb,
+   however long the dua on screen is. */
+.actionbar {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 10px;
+  padding: 10px var(--page-pad);
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.07);
+}
+
+.actionbar .btn-primary { flex: 1 1 auto; }
+
+.actionbar .btn-secondary {
+  flex: 0 0 34%;
+  width: auto;
+}
+
 .navbar {
   display: flex;
   flex-direction: column;
@@ -470,6 +530,44 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 }
 
 .btn-secondary:disabled { opacity: 0.4; }
+
+/* ---------- bottom tab bar ---------- */
+
+.tabbar {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.07);
+}
+
+.tabbar__item {
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  color: var(--ink-soft);
+  border-top: 3px solid transparent;
+}
+
+.tabbar__item.is-active {
+  color: var(--green);
+  border-top-color: var(--green);
+  background: var(--green-soft);
+}
+
+.tabbar__icon { font-size: 1.5rem; line-height: 1; }
+
+.tabbar__label {
+  font-size: calc(0.8rem * var(--scale));
+  font-weight: 700;
+  line-height: 1.6;
+}
 
 /* ---------- completion ---------- */
 
