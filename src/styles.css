@@ -1,0 +1,602 @@
+/* -------------------------------------------------------------------------
+   فونٹس — اپنے سرور پر (Google Fonts پر انحصار نہیں)
+   Self-hosted so the Urdu Nastaliq script renders correctly on the very first
+   load, on a weak connection, and fully offline. Both faces are SIL OFL 1.1.
+   ------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/noto-nastaliq-urdu-arabic.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1,
+    U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF,
+    U+FE70-FE74, U+FE76-FEFC;
+}
+
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/noto-nastaliq-urdu-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+20AC, U+2122, U+2212, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Amiri Quran';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/amiri-quran-arabic.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1,
+    U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF,
+    U+FE70-FE74, U+FE76-FEFC;
+}
+
+/* =========================================================================
+   نماز و اذکار — بڑی تحریر، سادہ رنگ، ایک وقت میں ایک کام
+   Designed for a reader recovering from memory loss: large type, high
+   contrast, one primary action per screen, generous tap targets.
+   ========================================================================= */
+
+:root {
+  /* Font scale is driven by FontSizeControl and stored in localStorage. */
+  --scale: 1;
+
+  --bg: #f7f4ec;
+  --surface: #ffffff;
+  --surface-2: #f1ece0;
+  --ink: #1a1a17;
+  --ink-soft: #4d4d45;
+  --line: #ddd6c6;
+
+  --green: #1f6b4a;
+  --green-dark: #17513a;
+  --green-soft: #e4f0e9;
+  --gold: #a97c2f;
+  --gold-soft: #f6eeda;
+
+  --radius: 18px;
+  --tap: 60px;
+  --page-pad: 18px;
+
+  --font-urdu: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Segoe UI', serif;
+  --font-arabic: 'Amiri Quran', 'Traditional Arabic', 'Noto Naskh Arabic', serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171a;
+    --surface: #1d2226;
+    --surface-2: #262c31;
+    --ink: #f2efe7;
+    --ink-soft: #b6b2a8;
+    --line: #343b41;
+
+    --green: #43a179;
+    --green-dark: #2f7c5b;
+    --green-soft: #1b3229;
+    --gold: #d7ac63;
+    --gold-soft: #33291a;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-urdu);
+  /* Nastaliq needs extra line height or the descenders collide. */
+  line-height: 2.1;
+  font-size: calc(19px * var(--scale));
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+button { font-family: inherit; color: inherit; cursor: pointer; }
+
+/* ---------- layout ---------- */
+
+.app {
+  min-height: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.page {
+  flex: 1;
+  padding: var(--page-pad);
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- top bar ---------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px var(--page-pad);
+  padding-top: max(8px, env(safe-area-inset-top));
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.topbar__title {
+  font-size: calc(1.05rem * var(--scale));
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.9;
+}
+
+.topbar__btn {
+  min-width: 52px;
+  min-height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 1.4rem;
+  display: grid;
+  place-items: center;
+  padding: 0 12px;
+}
+
+.topbar__btn:active { background: rgba(255, 255, 255, 0.3); }
+
+.fontsize {
+  display: flex;
+  gap: 6px;
+}
+
+.fontsize button {
+  min-width: 52px;
+  min-height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-family: system-ui, sans-serif;
+}
+
+.fontsize button:disabled { opacity: 0.35; }
+
+/* ---------- home ---------- */
+
+.hero {
+  text-align: center;
+  padding: 20px 6px 4px;
+}
+
+.hero__salam {
+  font-size: calc(1.6rem * var(--scale));
+  color: var(--green);
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.hero__sub {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: calc(0.95rem * var(--scale));
+}
+
+.bigbtn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 104px;
+  padding: 14px 18px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: right;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.bigbtn:active { transform: translateY(2px); box-shadow: none; }
+
+.bigbtn__icon {
+  flex: 0 0 auto;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: var(--green-soft);
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.bigbtn__label {
+  font-size: calc(1.35rem * var(--scale));
+  font-weight: 700;
+  line-height: 1.9;
+}
+
+.bigbtn__hint {
+  display: block;
+  font-size: calc(0.85rem * var(--scale));
+  color: var(--ink-soft);
+  font-weight: 400;
+  line-height: 1.9;
+}
+
+.bigbtn--resume {
+  border-color: var(--gold);
+  background: var(--gold-soft);
+}
+
+.bigbtn--resume .bigbtn__icon { background: rgba(169, 124, 47, 0.2); }
+
+/* ---------- prayer picker ---------- */
+
+.picker {
+  display: grid;
+  gap: 12px;
+}
+
+.picker__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 88px;
+  padding: 12px 18px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.picker__card:active { background: var(--surface-2); }
+
+.picker__name {
+  font-size: calc(1.4rem * var(--scale));
+  font-weight: 700;
+}
+
+.picker__count {
+  font-size: calc(0.95rem * var(--scale));
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: 999px;
+  padding: 4px 16px;
+  white-space: nowrap;
+}
+
+.note {
+  background: var(--gold-soft);
+  border: 1px solid var(--gold);
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: calc(0.9rem * var(--scale));
+  color: var(--ink);
+}
+
+/* ---------- progress ---------- */
+
+.progress__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: calc(0.9rem * var(--scale));
+  color: var(--ink-soft);
+}
+
+.progress__track {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.progress__fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+.rakah-pill {
+  align-self: flex-start;
+  background: var(--green);
+  color: #fff;
+  border-radius: 999px;
+  padding: 4px 18px;
+  font-size: calc(0.9rem * var(--scale));
+  font-weight: 700;
+}
+
+/* ---------- step card ---------- */
+
+.step {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.step__posture {
+  display: grid;
+  place-items: center;
+  background: var(--green-soft);
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.step__posture svg { width: 120px; height: 120px; }
+
+.step__title {
+  margin: 0;
+  font-size: calc(1.45rem * var(--scale));
+  font-weight: 700;
+  color: var(--green);
+  text-align: center;
+  line-height: 1.9;
+}
+
+.step__do {
+  margin: 0;
+  font-size: calc(1.15rem * var(--scale));
+  text-align: center;
+}
+
+.step__count {
+  align-self: center;
+  background: var(--gold-soft);
+  border: 1px solid var(--gold);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 4px 20px;
+  font-size: calc(1rem * var(--scale));
+  font-weight: 700;
+}
+
+.arabic {
+  font-family: var(--font-arabic);
+  direction: rtl;
+  font-size: calc(1.9rem * var(--scale));
+  line-height: 2.2;
+  text-align: center;
+  margin: 0;
+  color: var(--ink);
+  background: var(--surface-2);
+  border-radius: 14px;
+  padding: 16px 12px;
+}
+
+.translit {
+  margin: 0;
+  text-align: center;
+  font-size: calc(1.05rem * var(--scale));
+  color: var(--green-dark);
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .translit { color: var(--green); }
+}
+
+.meaning {
+  margin: 0;
+  text-align: center;
+  font-size: calc(1rem * var(--scale));
+  color: var(--ink-soft);
+}
+
+.meaning::before { content: 'ترجمہ: '; font-weight: 700; color: var(--ink); }
+
+/* ---------- audio ---------- */
+
+.audiobtn {
+  align-self: center;
+  min-height: var(--tap);
+  padding: 0 28px;
+  border: 2px solid var(--green);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--green);
+  font-size: calc(1.05rem * var(--scale));
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.audiobtn[data-playing='true'] {
+  background: var(--green);
+  color: #fff;
+}
+
+/* ---------- navigation ---------- */
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.btn-primary {
+  width: 100%;
+  min-height: 72px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--green);
+  color: #fff;
+  font-size: calc(1.3rem * var(--scale));
+  font-weight: 700;
+  box-shadow: 0 4px 0 var(--green-dark);
+}
+
+.btn-primary:active { transform: translateY(3px); box-shadow: none; }
+
+.btn-secondary {
+  width: 100%;
+  min-height: var(--tap);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: calc(1rem * var(--scale));
+}
+
+.btn-secondary:disabled { opacity: 0.4; }
+
+/* ---------- completion ---------- */
+
+.done {
+  text-align: center;
+  background: var(--surface);
+  border: 2px solid var(--green);
+  border-radius: var(--radius);
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.done__mark { font-size: 3.4rem; line-height: 1; }
+
+.done__title {
+  margin: 0;
+  color: var(--green);
+  font-size: calc(1.6rem * var(--scale));
+  font-weight: 700;
+}
+
+.done__text { margin: 0; color: var(--ink-soft); font-size: calc(1rem * var(--scale)); }
+
+/* ---------- azkaar ---------- */
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.tabs button {
+  min-height: var(--tap);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: calc(1.15rem * var(--scale));
+  font-weight: 700;
+}
+
+.tabs button[aria-pressed='true'] {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+.zikr {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.zikr[data-done='true'] {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
+.zikr__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.zikr__name {
+  margin: 0;
+  font-size: calc(1.15rem * var(--scale));
+  font-weight: 700;
+  color: var(--green);
+}
+
+.zikr__tick { font-size: 1.6rem; line-height: 1; }
+
+.counter {
+  align-self: center;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  border: 4px solid var(--green);
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  gap: 0;
+  font-family: var(--font-urdu);
+}
+
+.counter:active { transform: scale(0.97); }
+
+.counter[data-done='true'] { background: var(--green); color: #fff; }
+
+.counter__num {
+  font-size: calc(2rem * var(--scale));
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.counter__of {
+  font-size: calc(0.8rem * var(--scale));
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.zikr__reset {
+  align-self: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  font-size: calc(0.85rem * var(--scale));
+}
+
+.summary {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: calc(0.95rem * var(--scale));
+}
+
+/* Respect the reader's motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
