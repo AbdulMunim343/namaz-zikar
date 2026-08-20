@@ -11,6 +11,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // Registered by hand in main.jsx so it can be skipped inside the APK.
+      injectRegister: null,
       includeAssets: ['icons/*.svg'],
       manifest: {
         name: 'نماز و اذکار',

@@ -118,8 +118,15 @@ thumb no matter how long the dua on screen is.
 
 Audio is entirely frontend. Each step carries an optional `audio` filename:
 
-1. If that file exists in `public/audio/`, the 🔊 «سنیں» button plays the recording.
+1. If a real recording exists at that name, the 🔊 «سنیں» button plays it.
 2. If not, the phone's own text-to-speech reads the Arabic and then the Urdu.
+
+Step 1 checks with a `HEAD` request that the response is genuinely `audio/*`,
+rather than trusting that the file loaded. Capacitor's local server answers
+unknown paths with `index.html` — HTTP 200, `text/html` — so a missing mp3 looks
+like a successful load inside the app, no error ever fires, and the fallback
+would never run. A normal web server 404s, which is why that only broke on the
+phone.
 
 The engine differs by platform. Android's WebView — what the APK runs — does
 not implement the Web Speech API at all, so `speechSynthesis` is silently

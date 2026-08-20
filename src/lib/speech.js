@@ -237,6 +237,61 @@ function speak(id, { arabic, urdu }) {
  * @param {string} id    unique id of the step/zikr being read
  * @param {object} item  { arabic, urdu, audio }
  */
+/**
+ * Is there really a recording at this name?
+ *
+ * This has to be checked rather than assumed. Capacitor's local server answers
+ * unknown paths with index.html — HTTP 200, text/html — so a missing mp3 looks
+ * like a successful load inside the app: no error ever fires, the fallback
+ * never runs, and «سنیں» sits silent. (A normal web server 404s, which is why
+ * this only ever broke on the phone.) So confirm the response is actually audio
+ * before handing it to an <audio> element.
+ */
+async function recordingExists(file) {
+  try {
+    const res = await fetch(`${BASE}audio/${file}`, { method: 'HEAD' })
+    if (!res.ok) return false
+    const type = res.headers.get('content-type') || ''
+    return type.toLowerCase().startsWith('audio/')
+  } catch {
+    return false
+  }
+}
+
+/** How long to wait for a recording to actually start before giving up on it. */
+const AUDIO_START_TIMEOUT_MS = 2500
+
+function playRecording(id, item) {
+  const audio = new Audio(`${BASE}audio/${item.audio}`)
+  currentAudio = audio
+
+  // A missing file rejects play() *and* fires onerror, so guard the fallback —
+  // otherwise the dua gets spoken twice, on top of itself.
+  let settled = false
+  const fallback = () => {
+    if (settled) return
+    settled = true
+    clearTimeout(watchdog)
+    currentAudio = null
+    if (currentId === id) speak(id, item)
+  }
+
+  // Last line of defence: if the file neither plays nor errors (a stalled or
+  // undecodable response), fall back rather than leaving him with silence.
+  const watchdog = setTimeout(fallback, AUDIO_START_TIMEOUT_MS)
+
+  audio.onplaying = () => {
+    settled = true
+    clearTimeout(watchdog)
+  }
+  audio.onended = () => {
+    clearTimeout(watchdog)
+    finished(id)
+  }
+  audio.onerror = fallback
+  audio.play().catch(fallback)
+}
+
 export function play(id, item) {
   stop()
   currentId = id
@@ -247,23 +302,11 @@ export function play(id, item) {
     return
   }
 
-  const audio = new Audio(`${BASE}audio/${item.audio}`)
-  currentAudio = audio
-
-  // A missing file rejects play() *and* fires onerror, so guard the fallback —
-  // otherwise the dua gets spoken twice, on top of itself.
-  let usedFallback = false
-  const fallback = () => {
-    if (usedFallback) return
-    usedFallback = true
-    currentAudio = null
-    // No recording added yet — use the phone's own voice instead.
-    if (currentId === id) speak(id, item)
-  }
-
-  audio.onended = () => finished(id)
-  audio.onerror = fallback
-  audio.play().catch(fallback)
+  recordingExists(item.audio).then((exists) => {
+    if (currentId !== id) return // stopped, or another dua started meanwhile
+    if (exists) playRecording(id, item)
+    else speak(id, item) // no recording yet — the phone reads it instead
+  })
 }
 
 /* ---- subscription, for useSyncExternalStore ---- */
