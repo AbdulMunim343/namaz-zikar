@@ -79,6 +79,11 @@ Audio is entirely frontend. Each step carries an optional `audio` filename:
 1. If that file exists in `public/audio/`, the 🔊 «سنیں» button plays the recording.
 2. If not, the phone's own text-to-speech reads the Arabic and then the Urdu.
 
+The reader is a **male voice** where the phone has one: `pickVoice()` matches the
+male Arabic and Urdu voices each platform ships (Maged, Hamed, Asad …) and rules
+out the female ones. If a device only has a female voice, it pitches it lower
+rather than refusing to speak.
+
 A separate ⏹ «روکیں» button stops playback — two buttons that each do one thing,
 rather than one button that changes meaning. Playback runs through a single
 shared controller (`src/lib/speech.js`), so only one dua can play at a time,
