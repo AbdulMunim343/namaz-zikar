@@ -51,6 +51,10 @@ Drop in `.mp3` files named exactly as listed below.
 `zikr-radeetu.mp3`, `zikr-subhanallah.mp3`, `zikr-hasbiyallah.mp3`,
 `zikr-tahleel.mp3`
 
+### سونے کے اذکار (`src/data/nightAzkaar.js`)
+
+`baqarah-285.mp3`, `baqarah-286.mp3` — سورۃ البقرہ کا آخری رکوع
+
 ### مشورے (tips)
 
 - Keep each file short — one dua per file.
