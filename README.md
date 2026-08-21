@@ -139,40 +139,25 @@ falls back to Urdu rather than going blank.
 
 ### Audio
 
-Two platforms, two deliberately different answers:
+**Audio is the Android app only.** `AudioButton` renders nothing in a browser,
+and inside the app the 🔊 «سنیں» button uses the phone's own text-to-speech
+voice — the language (`ar-SA`, then `ur-PK`) and a slower rate of 0.85, never a
+voice and never a pitch.
 
-| Where | What plays |
-| --- | --- |
-| **Android app** | the phone's own text-to-speech voice |
-| **Website** | the bundled recording in `public/audio/` |
+Nothing is bundled: the website carries no recitation files, because most
+desktop browsers have no Arabic voice and a synthesised one is not worth putting
+in front of a reader. `public/audio/` holds only `tick.mp3` and `done.mp3` — the
+tasbeeh counter sounds, which are not speech and stay on both platforms.
 
-That split is the point. Android phones carry a real Arabic voice and it is far
-clearer than any file here; most desktop browsers carry **no Arabic voice at
-all**, so asking them to speak leaves the reader in silence. Treating both the
-same is what broke the website.
+If the phone has no engine or no Arabic/Urdu voice, the screen says so and
+explains how to install one rather than failing silently.
 
-Where the phone does speak, the app sets only the language (`ar-SA`, then
-`ur-PK`) and a slower rate of 0.85 — never a voice, never a pitch. An earlier
-version forced a male-sounding voice and pitched anything else down to `0.8`,
-which turned a natural voice growly. `voice-unit.mjs` asserts no utterance ever
-carries either.
+### On-screen text
 
-If a browser has no recording for a dua and cannot speak it either, the screen
-says so and explains how to install a voice, rather than failing silently.
-
-The clips are **synthesised with espeak-ng, not recited** — clear enough to
-follow the words, but robotic. Replacing any file in `public/audio/` with a real
-recording of the same name takes effect immediately:
-
-```bash
-pip install espeakng-loader imageio-ffmpeg
-npm run audio:texts          # dump the Arabic of every dua
-python3 scripts/generate.py  # synthesise + encode into public/audio/
-npm run audio:manifest       # refresh the list (also runs on every build)
-```
-
-`tick.mp3` and `done.mp3` are the tasbeeh counter sounds, not speech, and are
-excluded from the manifest.
+Each dua shows its **Arabic** and its **Urdu (or English) meaning**. There is no
+transliteration line: written in Urdu script it came out looking almost
+identical to the Arabic above it, so every card appeared to say the same thing
+twice. The `translit` fields remain in `src/data/` but are not rendered.
 
 ### Theme
 

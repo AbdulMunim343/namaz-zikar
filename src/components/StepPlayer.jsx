@@ -135,11 +135,6 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
           {step.times ? <span className="step__count">{step.times} {t.times}</span> : null}
 
           {step.arabic ? <p className="arabic">{step.arabic}</p> : null}
-          {step.translit ? (
-            <p className="translit" dir="rtl" lang="ur">
-              {step.translit}
-            </p>
-          ) : null}
           {step.meaning ? <p className="meaning">{step.meaning}</p> : null}
 
           {step.arabic ? (
@@ -158,9 +153,6 @@ export default function StepPlayer({ title, steps, path, startAt = 0 }) {
                     {option.name}
                   </h3>
                   <p className="arabic">{option.arabic}</p>
-                  <p className="translit" dir="rtl" lang="ur">
-                    {option.translit}
-                  </p>
                   <p className="meaning">{option.meaning}</p>
                   <AudioButton
                     id={`${step.id}-${option.id}`}

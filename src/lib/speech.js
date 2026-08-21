@@ -17,14 +17,11 @@
  * Capacitor plugin; in a browser we use speechSynthesis as before.
  */
 
-import { hasRecording } from '../data/audioManifest.js'
-
 // Vite inlines import.meta.env at build time; the guard keeps this module
 // importable in plain Node (where it is undefined) so it can be unit-tested.
 const BASE = typeof import.meta.env !== 'undefined' ? import.meta.env.BASE_URL : '/'
 
 let currentId = null
-let currentAudio = null
 let lastError = null
 const listeners = new Set()
 
@@ -168,12 +165,6 @@ export function stop() {
       /* nothing was speaking */
     }
   }
-  if (currentAudio) {
-    currentAudio.onended = null
-    currentAudio.onerror = null
-    currentAudio.pause()
-    currentAudio = null
-  }
   const s = synth()
   if (s) s.cancel()
   if (currentId !== null) {
@@ -185,7 +176,6 @@ export function stop() {
 function finished(id) {
   if (currentId === id) {
     currentId = null
-    currentAudio = null
     emit()
   }
 }
@@ -243,70 +233,16 @@ function speak(id, { arabic, urdu }) {
  * @param {string} id    unique id of the step/zikr being read
  * @param {object} item  { arabic, urdu, audio }
  */
-/*
- * Whether a recording exists is decided at build time (src/data/audioManifest.js),
- * not by asking the server. Asking was unreliable inside the APK: Capacitor's
- * local server answers unknown paths with index.html — HTTP 200 — so a missing
- * file looked present, no error ever fired, and nothing was ever heard.
- */
-
-/** How long to wait for a recording to actually start before giving up on it. */
-const AUDIO_START_TIMEOUT_MS = 2500
-
-function playRecording(id, item) {
-  const audio = new Audio(`${BASE}audio/${item.audio}`)
-  currentAudio = audio
-
-  // A missing file rejects play() *and* fires onerror, so guard the fallback —
-  // otherwise the dua gets spoken twice, on top of itself.
-  let settled = false
-  const fallback = () => {
-    if (settled) return
-    settled = true
-    clearTimeout(watchdog)
-    currentAudio = null
-    if (currentId === id) speak(id, item)
-  }
-
-  // Last line of defence: if the file neither plays nor errors (a stalled or
-  // undecodable response), fall back rather than leaving him with silence.
-  const watchdog = setTimeout(fallback, AUDIO_START_TIMEOUT_MS)
-
-  audio.onplaying = () => {
-    settled = true
-    clearTimeout(watchdog)
-    setError(null)
-  }
-  audio.onended = () => {
-    clearTimeout(watchdog)
-    finished(id)
-  }
-  audio.onerror = fallback
-  audio.play().catch(fallback)
-}
-
 /**
- * Two platforms, two deliberately different answers:
- *
- *   Android — the phone's own voice. It has a real Arabic voice and it is far
- *             clearer than anything that can be synthesised into a file.
- *   Web     — the bundled recording. Most desktop browsers ship NO Arabic voice
- *             at all, so asking them to speak leaves the reader in silence.
- *
- * Getting this wrong in one direction is what silenced the website.
+ * Audio is the Android app only — AudioButton renders nothing on the web — so
+ * this always goes to the phone's own voice, which is the clearest reader
+ * available and needs no files shipped with the app.
  */
 export function play(id, item) {
   stop()
   currentId = id
   emit()
-
-  if (isNative()) {
-    speak(id, item) // the phone reads it aloud
-    return
-  }
-
-  if (item.audio && hasRecording(item.audio)) playRecording(id, item)
-  else speak(id, item) // nothing bundled for this one — let the browser try
+  speak(id, item)
 }
 
 /* ---- subscription, for useSyncExternalStore ---- */

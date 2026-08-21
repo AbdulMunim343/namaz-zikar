@@ -1,5 +1,6 @@
 import { useSpeech } from '../hooks/useSpeech.js'
 import { useLang } from '../hooks/useLang.js'
+import { isNative } from '../lib/speech.js'
 import Icon from './Icon.jsx'
 
 /**
@@ -30,6 +31,10 @@ export default function AudioButton({ id, arabic, urdu, audio }) {
   const { playingId, isPlaying, error, play, stop } = useSpeech()
   const { t, lang } = useLang()
 
+  // Audio is the Android app only. On the web there is no voice worth using —
+  // most browsers have no Arabic voice, and a synthesised one is not worth
+  // putting in front of a reader.
+  if (!isNative()) return null
   if (!arabic && !urdu) return null
 
   const thisIsPlaying = playingId === id

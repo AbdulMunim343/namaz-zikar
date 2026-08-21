@@ -28,7 +28,6 @@ export default function ZikrCard({ zikr, count, onTap, onReset }) {
 
       {zikr.instruction ? <p className="step__do">{zikr.instruction}</p> : null}
       {zikr.arabic ? <p className="arabic">{zikr.arabic}</p> : null}
-      {zikr.translit ? <p className="translit" dir="rtl" lang="ur">{zikr.translit}</p> : null}
       {zikr.meaning ? <p className="meaning">{zikr.meaning}</p> : null}
       {zikr.virtue ? <p className="note">{zikr.virtue}</p> : null}
 
