@@ -21,6 +21,7 @@
 - درمیان میں موبائل بند ہو جائے تو اگلی بار **«جاری رکھیں»** کا بٹن آ جاتا ہے۔
 - انٹرنیٹ کے بغیر بھی چلتی ہے۔
 - **اینڈرائیڈ ایپ** بھی موجود ہے — اوپر والی پٹی سے ڈاؤن لوڈ کر لیں۔
+- اوپر کی پٹی میں **روشن / گہرا** رنگ کا بٹن — یا فون کی اپنی سیٹنگ کے مطابق۔
 - مرکزی صفحے پر **اردو | English** کا بٹن — انگریزی میں انٹرفیس، ہدایات اور ترجمہ
   انگریزی ہو جاتے ہیں، عربی اور اردو تلفظ ویسے کے ویسے رہتے ہیں۔
 
@@ -138,29 +139,49 @@ falls back to Urdu rather than going blank.
 
 ### Audio
 
-The 🔊 «سنیں» button uses **the phone's own text-to-speech voice**, and nothing
-else. The app sets only the language (`ar-SA`, then `ur-PK`) and a slower rate
-of 0.85. It deliberately does **not** set a voice or a pitch — the engine's own
-default for the language is clearer than anything this code can choose.
+Two platforms, two deliberately different answers:
 
-That restraint is the point. An earlier version preferred male-sounding voice
-names and pitched anything else down to `0.8`, which turned the phone's natural
-Arabic voice growly and slurred. A later version bundled 42 espeak-ng clips
-which took priority and replaced the phone's voice with robotic synthesis
-entirely. Both are gone. `verify-audio.mjs` and `voice-unit.mjs` now assert that
-no utterance ever carries a `voice` or a `pitch`.
+| Where | What plays |
+| --- | --- |
+| **Android app** | the phone's own text-to-speech voice |
+| **Website** | the bundled recording in `public/audio/` |
 
-If the phone has no engine or no Arabic/Urdu voice, `AudioButton` says so in
-Urdu or English and explains how to install one (Settings → Language & input →
-Text-to-speech) rather than failing silently.
+That split is the point. Android phones carry a real Arabic voice and it is far
+clearer than any file here; most desktop browsers carry **no Arabic voice at
+all**, so asking them to speak leaves the reader in silence. Treating both the
+same is what broke the website.
 
-`public/audio/` holds only `tick.mp3` and `done.mp3` — the tasbeeh counter
-sounds, generated with ffmpeg tones, unrelated to speech.
+Where the phone does speak, the app sets only the language (`ar-SA`, then
+`ur-PK`) and a slower rate of 0.85 — never a voice, never a pitch. An earlier
+version forced a male-sounding voice and pitched anything else down to `0.8`,
+which turned a natural voice growly. `voice-unit.mjs` asserts no utterance ever
+carries either.
 
-**Adding real recordings later** still works and is the best possible upgrade: a
-human voice beats any synthesiser. Drop `<name>.mp3` into `public/audio/` matching
-the `audio:` field of a dua and run `npm run audio:manifest` (the build does this
-too). Anything listed there plays instead of the phone's voice.
+If a browser has no recording for a dua and cannot speak it either, the screen
+says so and explains how to install a voice, rather than failing silently.
+
+The clips are **synthesised with espeak-ng, not recited** — clear enough to
+follow the words, but robotic. Replacing any file in `public/audio/` with a real
+recording of the same name takes effect immediately:
+
+```bash
+pip install espeakng-loader imageio-ffmpeg
+npm run audio:texts          # dump the Arabic of every dua
+python3 scripts/generate.py  # synthesise + encode into public/audio/
+npm run audio:manifest       # refresh the list (also runs on every build)
+```
+
+`tick.mp3` and `done.mp3` are the tasbeeh counter sounds, not speech, and are
+excluded from the manifest.
+
+### Theme
+
+Light and dark. The button in the top bar switches them from any screen. Until
+it is used, no `data-theme` is set and the app simply follows the device; once
+used, the choice wins in both directions and persists. The palettes are the CSS
+custom properties at the top of `src/styles.css` — the dark values appear twice,
+once under `prefers-color-scheme` (guarded by `:not([data-theme='light'])`) and
+once under `[data-theme='dark']`.
 
 ### Deployment
 

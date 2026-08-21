@@ -209,6 +209,8 @@ function speak(id, { arabic, urdu }) {
 
   const s = synth()
   if (!s) {
+    // No speech engine in this browser at all — say so rather than go quiet.
+    setError('no-engine')
     finished(id)
     return
   }
@@ -221,8 +223,16 @@ function speak(id, { arabic, urdu }) {
     // clearest voice the phone has.
     u.rate = 0.85
     if (i === parts.length - 1) {
-      u.onend = () => finished(id)
-      u.onerror = () => finished(id)
+      u.onend = () => {
+        setError(null)
+        finished(id)
+      }
+      // A browser with no voice for this language errors here. Previously this
+      // was swallowed, so the web failed silently with nothing on screen.
+      u.onerror = () => {
+        setError('no-voice')
+        finished(id)
+      }
     }
     s.speak(u)
   })
@@ -265,6 +275,7 @@ function playRecording(id, item) {
   audio.onplaying = () => {
     settled = true
     clearTimeout(watchdog)
+    setError(null)
   }
   audio.onended = () => {
     clearTimeout(watchdog)
@@ -274,19 +285,28 @@ function playRecording(id, item) {
   audio.play().catch(fallback)
 }
 
+/**
+ * Two platforms, two deliberately different answers:
+ *
+ *   Android — the phone's own voice. It has a real Arabic voice and it is far
+ *             clearer than anything that can be synthesised into a file.
+ *   Web     — the bundled recording. Most desktop browsers ship NO Arabic voice
+ *             at all, so asking them to speak leaves the reader in silence.
+ *
+ * Getting this wrong in one direction is what silenced the website.
+ */
 export function play(id, item) {
   stop()
   currentId = id
   emit()
-  if (!isNative()) setError(null)
 
-  if (!item.audio) {
-    speak(id, item)
+  if (isNative()) {
+    speak(id, item) // the phone reads it aloud
     return
   }
 
-  if (hasRecording(item.audio)) playRecording(id, item)
-  else speak(id, item) // no recording for this one — the phone reads it instead
+  if (item.audio && hasRecording(item.audio)) playRecording(id, item)
+  else speak(id, item) // nothing bundled for this one — let the browser try
 }
 
 /* ---- subscription, for useSyncExternalStore ---- */

@@ -6,6 +6,7 @@ import LangSwitch from '../components/LangSwitch.jsx'
 import { useLang } from '../hooks/useLang.js'
 import { prayerName } from '../lib/lang.js'
 import Icon from '../components/Icon.jsx'
+import ThemeToggle from '../components/ThemeToggle.jsx'
 
 /**
  * مرکزی صفحہ — نماز والا صفحہ
@@ -23,7 +24,10 @@ export default function Home() {
       <header className="topbar">
         <span style={{ minWidth: 52 }} aria-hidden="true" />
         <h1 className="topbar__title">{t.appName}</h1>
-        <FontSizeControl />
+        <div className="topbar__tools">
+          <ThemeToggle />
+          <FontSizeControl />
+        </div>
       </header>
 
       <main className="page">

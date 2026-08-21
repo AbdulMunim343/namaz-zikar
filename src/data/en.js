@@ -57,6 +57,8 @@ export const UI = {
     apkTitle: 'اینڈرائیڈ ایپ ڈاؤن لوڈ کریں',
     apkHint: 'فون میں انسٹال کر لیں — انٹرنیٹ کے بغیر چلے گی',
     langLabel: 'زبان',
+    darkMode: 'گہرا رنگ',
+    lightMode: 'روشن رنگ',
     biggerText: 'تحریر بڑی کریں',
     smallerText: 'تحریر چھوٹی کریں',
   },
@@ -105,6 +107,8 @@ export const UI = {
     apkTitle: 'Download the Android app',
     apkHint: 'Install it on the phone — it works without internet',
     langLabel: 'Language',
+    darkMode: 'Dark mode',
+    lightMode: 'Light mode',
     biggerText: 'Larger text',
     smallerText: 'Smaller text',
   },
@@ -251,17 +255,11 @@ export const EN_STEPS = {
     do: 'Say “Allahu Akbar”, stand up and raise your hands to your shoulders (raf‘ al-yadain), then fold your hands on your chest.',
     meaning: 'Allah is the greatest.',
   },
-  qunoot1: {
-    title: 'Dua-e-Qunoot — first part',
-    do: 'In this rak‘ah, after the surah and BEFORE going into ruku‘ — while still standing — raise your hands in dua and read:',
+  qunoot: {
+    title: 'Dua-e-Qunoot',
+    do: 'In this rak‘ah, after the surah and BEFORE going into ruku‘ — while still standing — raise your hands in dua and read the whole of it:',
     meaning:
-      'O Allah, guide me among those You have guided, grant me well-being among those You have granted well-being, take me into Your care among those You have taken into Your care, and bless what You have given me.',
-  },
-  qunoot2: {
-    title: 'Dua-e-Qunoot — second part',
-    do: 'With your hands still raised, complete the dua:',
-    meaning:
-      'And protect me from the evil of what You have decreed. Indeed You decree, and none decrees over You. The one You befriend is never humiliated. Blessed are You, our Lord, and exalted.',
+      'O Allah, guide me among those You have guided, grant me well-being among those You have granted well-being, take me into Your care among those You have taken into Your care, and bless what You have given me. And protect me from the evil of what You have decreed. Indeed You decree, and none decrees over You. The one You befriend is never humiliated. Blessed are You, our Lord, and exalted.',
   },
 }
 
@@ -357,16 +355,11 @@ export const EN_ZIKR = {
     meaning:
       'Allah — there is no god but He, the Ever-Living, the Sustainer of all. Neither drowsiness nor sleep overtakes Him. To Him belongs whatever is in the heavens and whatever is on the earth. Who can intercede with Him except by His permission? He knows what lies before them and what is behind them, and they grasp nothing of His knowledge except what He wills. His Kursi extends over the heavens and the earth, and guarding them does not tire Him. He is the Most High, the Most Great.',
   },
-  'night-baqarah-285': {
-    name: 'Last ruku‘ of Surah al-Baqarah — first verse',
+  'night-baqarah': {
+    name: 'Last ruku‘ of Surah al-Baqarah',
     virtue: 'Whoever reads the last two verses of Surah al-Baqarah at night, they will suffice him.',
     meaning:
-      'The Messenger believes in what was revealed to him from his Lord, and so do the believers. All believe in Allah, His angels, His books and His messengers. We make no distinction between any of His messengers. And they say: We hear and we obey. Grant us Your forgiveness, our Lord, and to You is the return.',
-  },
-  'night-baqarah-286': {
-    name: 'Last ruku‘ of Surah al-Baqarah — second verse',
-    meaning:
-      'Allah does not burden a soul beyond what it can bear. It gets what good it earned, and it bears what evil it earned. Our Lord, do not take us to task if we forget or make a mistake. Our Lord, do not lay upon us a burden like the one You laid upon those before us. Our Lord, do not burden us with what we have no strength to bear. Pardon us, forgive us and have mercy on us. You are our Protector, so help us against the disbelieving people.',
+      'The Messenger believes in what was revealed to him from his Lord, and so do the believers. All believe in Allah, His angels, His books and His messengers. We make no distinction between any of His messengers. And they say: We hear and we obey. Grant us Your forgiveness, our Lord, and to You is the return. Allah does not burden a soul beyond what it can bear. It gets what good it earned, and it bears what evil it earned. Our Lord, do not take us to task if we forget or make a mistake. Our Lord, do not lay upon us a burden like the one You laid upon those before us. Our Lord, do not burden us with what we have no strength to bear. Pardon us, forgive us and have mercy on us. You are our Protector, so help us against the disbelieving people.',
   },
   'night-ikhlas': {
     name: 'Surah al-Ikhlas',

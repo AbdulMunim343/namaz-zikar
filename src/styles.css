@@ -68,8 +68,9 @@
   --font-arabic: 'Amiri Quran', 'Traditional Arabic', 'Noto Naskh Arabic', serif;
 }
 
+/* The device's own setting applies unless the reader has chosen light. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     --bg: #14171a;
     --surface: #1d2226;
     --surface-2: #262c31;
@@ -84,6 +85,24 @@
     --gold-soft: #33291a;
     --stop: #e08573;
   }
+}
+
+/* An explicit choice of dark wins even on a light device. */
+:root[data-theme='dark'] {
+
+  --bg: #14171a;
+  --surface: #1d2226;
+  --surface-2: #262c31;
+  --ink: #f2efe7;
+  --ink-soft: #b6b2a8;
+  --line: #343b41;
+
+  --green: #43a179;
+  --green-dark: #2f7c5b;
+  --green-soft: #1b3229;
+  --gold: #d7ac63;
+  --gold-soft: #33291a;
+  --stop: #e08573;
 }
 
 * { box-sizing: border-box; }
@@ -198,6 +217,12 @@ body { overscroll-behavior: none; }
 }
 
 /* ---------- top bar ---------- */
+
+.topbar__tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
 .topbar {
   flex: 0 0 auto;
@@ -547,8 +572,10 @@ body { overscroll-behavior: none; }
 }
 
 @media (prefers-color-scheme: dark) {
-  .translit { color: var(--green); }
+  :root:not([data-theme='light']) .translit { color: var(--green); }
 }
+
+:root[data-theme='dark'] .translit { color: var(--green); }
 
 .meaning {
   margin: 0;
