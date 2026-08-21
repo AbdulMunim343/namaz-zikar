@@ -110,7 +110,7 @@ npm run preview    # serve the production build locally
 | `src/components/ZikrCard.jsx` | One dua plus its tap-to-count circle |
 | `src/components/ZikrList.jsx` | Shared list + daily counters (صبح/شام and رات) |
 | `src/styles.css` | All styling: RTL, large type, light/dark |
-| `public/audio/` | Optional recordings — see the README in that folder |
+| `public/audio/` | Counter sounds, plus any real recordings you add |
 | `public/fonts/` | Self-hosted Noto Nastaliq Urdu + Amiri Quran (SIL OFL 1.1) |
 
 ### Layout
@@ -138,35 +138,29 @@ falls back to Urdu rather than going blank.
 
 ### Audio
 
-**The recordings ship with the app.** 38 clips live in `public/audio/`, one per
-dua, and `src/data/audioManifest.js` (generated at build time) lists them. The
-🔊 «سنیں» button plays the bundled file; nothing depends on the phone.
+The 🔊 «سنیں» button uses **the phone's own text-to-speech voice**, and nothing
+else. The app sets only the language (`ar-SA`, then `ur-PK`) and a slower rate
+of 0.85. It deliberately does **not** set a voice or a pitch — the engine's own
+default for the language is clearer than anything this code can choose.
 
-That last point is the whole reason they exist. Speech previously came from the
-device's text-to-speech, and Android phones very often ship **no Urdu voice at
-all and frequently no Arabic one**, so «سنیں» was silent on the very phone this
-was built for. Text-to-speech remains only as a fallback for a dua with no
-recording, which is currently none of them.
+That restraint is the point. An earlier version preferred male-sounding voice
+names and pitched anything else down to `0.8`, which turned the phone's natural
+Arabic voice growly and slurred. A later version bundled 42 espeak-ng clips
+which took priority and replaced the phone's voice with robotic synthesis
+entirely. Both are gone. `verify-audio.mjs` and `voice-unit.mjs` now assert that
+no utterance ever carries a `voice` or a `pitch`.
 
-The reader is espeak-ng's own Arabic voice, which is male. Its `+m3` male
-variant was tried and reverted — it distorted the recitation badly.
+If the phone has no engine or no Arabic/Urdu voice, `AudioButton` says so in
+Urdu or English and explains how to install one (Settings → Language & input →
+Text-to-speech) rather than failing silently.
 
-The clips are **synthesised with espeak-ng, not recited** — clear enough to
-follow the words, but robotic, and no substitute for a qari. Replacing any file
-in `public/audio/` with a real recording of the same name takes effect
-immediately, with no code change:
+`public/audio/` holds only `tick.mp3` and `done.mp3` — the tasbeeh counter
+sounds, generated with ffmpeg tones, unrelated to speech.
 
-```bash
-pip install espeakng-loader imageio-ffmpeg
-npm run audio:texts          # dump the Arabic of every dua
-python3 scripts/generate.py  # synthesise + encode into public/audio/
-npm run audio:manifest       # refresh the list (also runs on every build)
-```
-
-Whether a recording exists is decided from that build-time list rather than by
-asking the server. Asking was unreliable inside the APK: Capacitor's local
-server answers unknown paths with `index.html` — HTTP 200 — so a missing file
-looked present, no error fired, and nothing was ever heard.
+**Adding real recordings later** still works and is the best possible upgrade: a
+human voice beats any synthesiser. Drop `<name>.mp3` into `public/audio/` matching
+the `audio:` field of a dua and run `npm run audio:manifest` (the build does this
+too). Anything listed there plays instead of the phone's voice.
 
 ### Deployment
 

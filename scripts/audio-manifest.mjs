@@ -10,8 +10,12 @@
  */
 import { readdirSync, writeFileSync } from 'node:fs'
 
+// tick/done are the counter sound effects, loaded by name in src/lib/sfx.js —
+// they are not recitations and must never be offered as one.
+const SOUND_EFFECTS = new Set(['tick.mp3', 'done.mp3'])
+
 const files = readdirSync('public/audio')
-  .filter((f) => /\.(mp3|m4a|ogg|wav)$/i.test(f))
+  .filter((f) => /\.(mp3|m4a|ogg|wav)$/i.test(f) && !SOUND_EFFECTS.has(f))
   .sort()
 
 writeFileSync(
@@ -30,4 +34,4 @@ export function hasRecording(file) {
 `,
 )
 
-console.log(`audioManifest.js: ${files.length} recordings`)
+console.log(`audioManifest.js: ${files.length} recitation(s)`)

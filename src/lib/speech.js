@@ -98,27 +98,13 @@ export function __setNativeTts(impl) {
   nativeTtsLoad = impl ? Promise.resolve({ tts: impl }) : null
 }
 
-/** Pick a male voice index from the engine's own voice list, if it offers one. */
-async function nativeVoiceIndex(tts, lang) {
-  try {
-    const { voices } = await tts.getSupportedVoices()
-    if (!Array.isArray(voices)) return undefined
-    const base = lang.split('-')[0]
-    let best
-    voices.forEach((v, i) => {
-      if (!v.lang || !v.lang.toLowerCase().startsWith(base)) return
-      let score = 0
-      if (MALE_NAMES.test(v.name || '')) score += 10
-      if (FEMALE_NAMES.test(v.name || '')) score -= 20
-      if ((v.lang || '').toLowerCase() === lang.toLowerCase()) score += 3
-      if (!best || score > best.score) best = { i, score }
-    })
-    return best ? best.i : undefined
-  } catch {
-    // Some engines do not implement getSupportedVoices — speak with the default.
-    return undefined
-  }
-}
+/*
+ * The device's own default voice is used, deliberately. Choosing a voice here
+ * was what broke the audio: a male-name preference pushed past the phone's good
+ * Arabic voice, and any voice not matched as male was pitched down to 0.8 —
+ * which turns a natural voice growly and slurred. The engine's own default for
+ * the language is clearer than anything this code can pick.
+ */
 
 async function speakNative(id, parts) {
   let tts
@@ -140,7 +126,6 @@ async function speakNative(id, parts) {
   for (const part of parts) {
     if (currentId !== id) return // stopped, or another dua started
 
-    const voice = await nativeVoiceIndex(tts, part.lang)
     // Most phones ship no Urdu voice and many no Arabic one, so try the exact
     // locale first and then the bare language (ar-SA → ar) before giving up.
     const langs = [part.lang, part.lang.split('-')[0]]
@@ -151,11 +136,10 @@ async function speakNative(id, parts) {
         await tts.speak({
           text: part.text,
           lang,
-          rate: 0.85,
-          pitch: 1.0,
+          rate: 0.85, // slower, so he can follow along and repeat
+          pitch: 1.0, // natural — never altered
           volume: 1.0,
           category: 'ambient',
-          ...(voice === undefined ? {} : { voice }),
         })
         spokeSomething = true
         break
@@ -171,59 +155,6 @@ async function speakNative(id, parts) {
   else setError('no-voice')
 
   finished(id)
-}
-
-/* ------------------------------------------------------------------ */
-/* مردانہ آواز کا انتخاب — pick a male reader                          */
-/* ------------------------------------------------------------------ */
-
-// Voice names vary by phone and browser, so match on the known male voices
-// each platform ships for Arabic and Urdu, and rule out the female ones.
-const MALE_NAMES = /maged|majed|tarik|hamed|hamdan|bassel|shakir|saleh|omar|asad|salman|faizan|male/i
-const FEMALE_NAMES = /female|woman|zariyah|salma|laila|layla|uzma|amina|hala|noura|nora|sana|gul|maryam|fatima/i
-
-function voicesFor(lang) {
-  const s = synth()
-  if (!s || typeof s.getVoices !== 'function') return []
-  const base = lang.split('-')[0]
-  return s.getVoices().filter((v) => v.lang && v.lang.toLowerCase().startsWith(base))
-}
-
-/**
- * Returns { voice, pitch } for a language.
- * If no male voice exists on the device, drop the pitch a little so whatever
- * voice is available at least reads lower.
- */
-function pickVoice(lang) {
-  const candidates = voicesFor(lang)
-  if (candidates.length === 0) return { voice: null, pitch: 1 }
-
-  const scored = candidates
-    .map((v) => {
-      let score = 0
-      if (MALE_NAMES.test(v.name)) score += 10
-      if (FEMALE_NAMES.test(v.name)) score -= 20
-      // Prefer an exact regional match (ar-SA over ar-EG).
-      if (v.lang.toLowerCase() === lang.toLowerCase()) score += 3
-      if (v.localService) score += 1
-      return { v, score }
-    })
-    .sort((a, b) => b.score - a.score)
-
-  const best = scored[0]
-  const isMale = MALE_NAMES.test(best.v.name)
-  return { voice: best.v, pitch: isMale ? 1 : 0.8 }
-}
-
-// Voices load asynchronously on most browsers; this fires once they arrive.
-if (typeof window !== 'undefined' && window.speechSynthesis) {
-  const s = window.speechSynthesis
-  if (typeof s.getVoices === 'function') s.getVoices()
-  if (typeof s.addEventListener === 'function') {
-    s.addEventListener('voiceschanged', () => {
-      if (typeof s.getVoices === 'function') s.getVoices()
-    })
-  }
 }
 
 /** روکیں — stops a recording and any queued text-to-speech. */
@@ -285,11 +216,10 @@ function speak(id, { arabic, urdu }) {
   parts.forEach((part, i) => {
     const u = new SpeechSynthesisUtterance(part.text)
     u.lang = part.lang
-    // Slower than default so he can follow along and repeat.
+    // Slower than default so he can follow along and repeat. Nothing else is
+    // set: no voice, no pitch — the engine's default for this language is the
+    // clearest voice the phone has.
     u.rate = 0.85
-    const { voice, pitch } = pickVoice(part.lang)
-    if (voice) u.voice = voice
-    u.pitch = pitch
     if (i === parts.length - 1) {
       u.onend = () => finished(id)
       u.onerror = () => finished(id)
