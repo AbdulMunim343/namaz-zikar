@@ -2,6 +2,55 @@
 
 نماز، وتر اور صبح و شام کے اذکار — **قدم بہ قدم، بڑی تحریر میں، اردو میں۔**
 
+## About
+
+**نماز و اذکار** is a step-by-step guide to the daily prayers and the everyday
+azkaar, in Urdu or English, built to be used on a phone.
+
+It exists for a specific reason. It was written for someone relearning how to
+pray after an illness took the memory of it — an adult who knows exactly what he
+is trying to do but can no longer recall what comes next. Almost every design
+decision in it follows from that, and from one rule: **he should never have to
+remember anything, and never have to work anything out.**
+
+### What it covers
+
+| Section | What is in it |
+| --- | --- |
+| **نماز** | All five daily prayers, the fard rak‘ahs, step by step — 26 steps for Fajr, 45 for Isha |
+| **وتر** | Two separate prayers: 2 rak‘ah, then 1 rak‘ah with Dua-e-Qunoot |
+| **اذکار** | Morning, evening, and the duas read straight after each prayer |
+| **رات** | The azkaar for lying down at night, ending with the dua for waking |
+
+Every step tells him two things separately: **what to do with his body**
+("bow, and put your hands on your knees") and **what to say** — the Arabic in
+full, with its meaning underneath. Prayers follow the **Ahl-e-Hadith** method:
+raf‘ al-yadain, Ameen aloud, hands on the chest, and the qunoot before ruku‘.
+
+### How it is built for him
+
+- **One step per screen.** Never a list to hold in mind, never a wall of text.
+- **«اگلا قدم» is pinned to the bottom**, so it is under his thumb however long
+  the dua on screen is.
+- **«قدم 8 از 26»** is always visible, so he always knows where he is and how
+  much is left.
+- **«جاری رکھیں»** — if he puts the phone down mid-prayer, it offers to resume
+  from the exact step.
+- **Very large Nastaliq type**, with A+ / A− that also scales the icons.
+- **The tasbeeh counts itself.** A big circle to tap, a soft tick each time and
+  a different sound when the count is reached, so he can keep his eyes closed.
+- **Nothing punishes him.** No timers, no streaks, no scores, no login, and
+  counts reset quietly each day.
+
+### Where it runs
+
+A website and an Android app built from **one codebase**, so the two can never
+drift apart. Both work **offline** — the website caches itself, and the app
+carries everything on the device. In the app, the 🔊 button reads a dua aloud in
+the phone's own voice.
+
+### ایپ میں کیا ہے
+
 یہ ویب سائٹ خاص طور پر ایسے شخص کے لیے بنائی گئی ہے جو بیماری کے بعد نماز کا
 طریقہ بھول گیا ہو۔ اس لیے:
 
@@ -16,14 +65,14 @@
 - ایک وقت میں **صرف ایک قدم** سکرین پر آتا ہے — کچھ یاد رکھنے کی ضرورت نہیں۔
 - تحریر **بہت بڑی** ہے، اور اوپر «A+» سے اور بھی بڑی کی جا سکتی ہے۔
 - ہر قدم پر لکھا ہوتا ہے کہ **جسم کے ساتھ کیا کرنا ہے** اور **کیا پڑھنا ہے**۔
-- ہر دعا **عربی**، **اردو میں تلفظ** اور **اردو ترجمہ** — تینوں کے ساتھ۔
+- ہر دعا **عربی** اور اُس کے ساتھ **اردو ترجمہ**۔
 - «قدم 4 از 26» ہمیشہ نظر آتا ہے، تاکہ معلوم رہے کتنا باقی ہے۔
 - درمیان میں موبائل بند ہو جائے تو اگلی بار **«جاری رکھیں»** کا بٹن آ جاتا ہے۔
 - انٹرنیٹ کے بغیر بھی چلتی ہے۔
 - **اینڈرائیڈ ایپ** بھی موجود ہے — اوپر والی پٹی سے ڈاؤن لوڈ کر لیں۔
 - اوپر کی پٹی میں **روشن / گہرا** رنگ کا بٹن — یا فون کی اپنی سیٹنگ کے مطابق۔
 - مرکزی صفحے پر **اردو | English** کا بٹن — انگریزی میں انٹرفیس، ہدایات اور ترجمہ
-  انگریزی ہو جاتے ہیں، عربی اور اردو تلفظ ویسے کے ویسے رہتے ہیں۔
+  انگریزی ہو جاتے ہیں، عربی جوں کی توں رہتی ہے۔
 
 نماز کا طریقہ **اہلحدیث** مسلک کے مطابق ہے (رفع الیدین، آمین بلند آواز سے، ہاتھ
 سینے پر)۔ وتر دو الگ نمازیں ہیں: پہلے ۲ رکعت پڑھ کر سلام، پھر الگ نیت سے ۱ رکعت
