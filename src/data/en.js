@@ -267,7 +267,7 @@ export const EN_STEPS = {
     title: 'Dua-e-Qunoot',
     do: 'In this rak‘ah, after the surah and BEFORE going into ruku‘ — while still standing — raise your hands in dua and read the whole of it:',
     meaning:
-      'O Allah, guide me among those You have guided, grant me well-being among those You have granted well-being, take me into Your care among those You have taken into Your care, and bless what You have given me. And protect me from the evil of what You have decreed. Indeed You decree, and none decrees over You. The one You befriend is never humiliated. Blessed are You, our Lord, and exalted.',
+      'O Allah, guide me among those You have guided, grant me well-being among those You have granted well-being, take me into Your care among those You have taken into Your care, and bless what You have given me. And protect me from the evil of what You have decreed. Indeed You decree, and none decrees over You. The one You befriend is never humiliated, and the one You are hostile to never attains honour. Blessed are You, our Lord, and exalted.',
   },
 }
 
