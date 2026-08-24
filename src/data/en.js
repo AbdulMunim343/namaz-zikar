@@ -238,7 +238,7 @@ export const EN_STEPS = {
     title: 'Dua before the salam',
     do: 'Before giving the salam, make this dua:',
     meaning:
-      'O Allah, I seek refuge with You from the punishment of Hell, from the punishment of the grave, from the trials of life and death, and from the evil of the trial of the Dajjal.',
+      'O Allah, I seek refuge with You from the punishment of Hell, and I seek refuge with You from the punishment of the grave, and I seek refuge with You from the trial of the Dajjal (the False Messiah), and I seek refuge with You from the trials of life and death.',
   },
   salam: {
     title: 'Salam',
