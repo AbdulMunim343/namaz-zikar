@@ -210,7 +210,8 @@ export const EN_STEPS = {
   jalsa: {
     title: 'Sitting between the two sajdahs',
     do: 'Say “Allahu Akbar”, rise from the sajdah and sit calmly, then read:',
-    meaning: 'My Lord, forgive me and have mercy on me.',
+    meaning:
+      'O Allah, forgive me, have mercy on me, guide me, support me, protect me, provide for me, and elevate me.',
   },
   sajda2: {
     title: 'Second sajdah',
