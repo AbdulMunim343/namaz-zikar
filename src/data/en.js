@@ -199,7 +199,8 @@ export const EN_STEPS = {
   qawma: {
     title: 'Rising from ruku‘',
     do: 'As you rise, raise your hands to your shoulders (raf‘ al-yadain) and say “Sami‘ Allahu liman hamidah”, then stand straight and say:',
-    meaning: 'Allah hears the one who praises Him. Our Lord, all praise is Yours.',
+    meaning:
+      'Allah hears the one who praises Him. Our Lord, to You belongs all praise — abundant, good, and blessed praise.',
   },
   sajda1: {
     title: 'First sajdah',
