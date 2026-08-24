@@ -241,6 +241,12 @@ export const EN_STEPS = {
     meaning:
       'O Allah, I seek refuge with You from the punishment of Hell, and I seek refuge with You from the punishment of the grave, and I seek refuge with You from the trial of the Dajjal (the False Messiah), and I seek refuge with You from the trials of life and death.',
   },
+  duaBeforeSalam2: {
+    title: 'Another dua before the salam',
+    do: 'You may also read this dua before giving the salam:',
+    meaning:
+      'O Allah, I have greatly wronged myself, and none forgives sins but You. So grant me forgiveness from You, and have mercy on me. Surely You are the Forgiving, the Merciful.',
+  },
   salam: {
     title: 'Salam',
     do: 'Turn your face to the right, then to the left, saying each time:',

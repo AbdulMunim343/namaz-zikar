@@ -17,7 +17,7 @@ remember anything, and never have to work anything out.**
 
 | Section | What is in it |
 | --- | --- |
-| **نماز** | All five daily prayers, the fard rak‘ahs, step by step — 26 steps for Fajr, 45 for Isha |
+| **نماز** | All five daily prayers, the fard rak‘ahs, step by step — 27 steps for Fajr, 46 for Isha |
 | **وتر** | Two separate prayers: 2 rak‘ah, then 1 rak‘ah with Dua-e-Qunoot |
 | **اذکار** | Morning, evening, and the duas read straight after each prayer |
 | **رات** | The azkaar for lying down at night, ending with the dua for waking |

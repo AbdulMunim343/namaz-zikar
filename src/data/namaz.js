@@ -265,6 +265,20 @@ export const DUA_BEFORE_SALAM = {
   audio: 'dua-salam.mp3',
 }
 
+export const DUA_BEFORE_SALAM_2 = {
+  key: 'duaBeforeSalam2',
+  posture: 'jalsa',
+  title: 'سلام سے پہلے ایک اور دعا',
+  do: 'یہ دعا بھی سلام پھیرنے سے پہلے پڑھ سکتے ہیں:',
+  arabic:
+    'اَللَّهُمَّ إِنِّي ظَلَمْتُ نَفْسِي ظُلْمًا كَثِيرًا، وَلَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ، فَاغْفِرْ لِي مَغْفِرَةً مِنْ عِنْدِكَ، وَارْحَمْنِي، إِنَّكَ أَنْتَ الْغَفُورُ الرَّحِيمُ',
+  translit:
+    'اَللّٰہُمَّ اِنِّیْ ظَلَمْتُ نَفْسِیْ ظُلْمًا کَثِیْرًا، وَلَا یَغْفِرُ الذُّنُوْبَ اِلَّا اَنْتَ، فَاغْفِرْ لِیْ مَغْفِرَۃً مِنْ عِنْدِکَ، وَارْحَمْنِیْ، اِنَّکَ اَنْتَ الْغَفُوْرُ الرَّحِیْم',
+  meaning:
+    'اے اللہ! میں نے اپنی جان پر بہت ظلم کیا ہے، اور گناہوں کو تیرے سوا کوئی معاف نہیں کرتا۔ پس مجھے اپنے پاس سے بخش دے اور مجھ پر رحم فرما، بے شک تُو ہی بخشنے والا، رحم کرنے والا ہے۔',
+  audio: 'dua-salam-2.mp3',
+}
+
 export const SALAM = {
   key: 'salam',
   posture: 'salam',
@@ -346,6 +360,7 @@ export function buildNamazSteps(prayerId) {
         { ...TASHAHHUD, rakah, id: `r${rakah}-tashahhud` },
         { ...DUROOD, rakah, id: `r${rakah}-durood` },
         { ...DUA_BEFORE_SALAM, rakah, id: `r${rakah}-dua` },
+        { ...DUA_BEFORE_SALAM_2, rakah, id: `r${rakah}-dua-2` },
         { ...SALAM, rakah, id: `r${rakah}-salam` },
       )
     } else if (rakah === 2) {
